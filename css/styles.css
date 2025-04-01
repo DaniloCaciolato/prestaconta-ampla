@@ -28,33 +28,75 @@
     /* Bordas */
     --border: #e2e8f0;
     --shadow: rgba(0, 0, 0, 0.1);
+
+    /* Cores específicas */
+    --header-gradient-start: #777777;
+    --card-header-bg: var(--primary);
+    --table-primary-bg: rgba(126, 34, 206, 0.1);
+    --table-danger-bg: rgba(220, 53, 69, 0.1);
 }
 
-/* Variáveis para o tema escuro */
+/* Variáveis para o tema escuro - Completamente refeito */
 .dark-mode {
-    /* Cores de fundo - Astro.js */
-    --background: #13151a;
-    --background-secondary: #1e1e2e;
-    --surface: #23262f;
+    /* Cores de fundo - Melhoradas para mais contraste */
+    --background: #121318;
+    --background-secondary: #1a1c25;
+    --surface: #23252f;
     
-    /* Cores de texto - Astro.js */
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
+    /* Cores de texto - Ajustadas para melhor legibilidade */
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
     
-    /* Cores de destaque - Astro.js */
+    /* Cores de destaque - Mais vibrantes para o tema escuro */
     --primary: #a855f7;       /* Roxo claro (primário) */
     --secondary: #818cf8;     /* Índigo claro (secundário) */
     --accent: #ff8a4c;        /* Laranja claro (destaque) */
     
-    /* Cores funcionais */
-    --success: #34d399;       /* Verde claro (sucesso) */
-    --error: #f87171;         /* Vermelho claro (erro) */
+    /* Cores funcionais - Mais saturadas para contraste */
+    --success: #4ade80;       /* Verde claro (sucesso) */
+    --error: #fb7185;         /* Vermelho claro (erro) */
     --warning: #fbbf24;       /* Amarelo claro (alerta) */
-    --info: #60a5fa;          /* Azul claro (informação) */
+    --info: #38bdf8;          /* Azul claro (informação) */
 
-    /* Bordas */
-    --border: #2d3748;
+    /* Bordas e sombras - Escurecidas */
+    --border: #3f3f46;
     --shadow: rgba(0, 0, 0, 0.5);
+
+    /* Cores específicas para o tema escuro */
+    --header-gradient-start: #222222;
+    --card-header-bg: #331e52; /* Roxo escuro */
+    --table-primary-bg: rgba(168, 85, 247, 0.15);
+    --table-danger-bg: rgba(248, 113, 113, 0.15);
+}
+
+/* Media query para preferências do sistema */
+@media (prefers-color-scheme: dark) {
+    body:not(.light-mode):not(.dark-mode) {
+        /* Aplicar as mesmas variáveis do tema escuro */
+        --background: #121318;
+        --background-secondary: #1a1c25;
+        --surface: #23252f;
+        
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        
+        --primary: #a855f7;
+        --secondary: #818cf8;
+        --accent: #ff8a4c;
+        
+        --success: #4ade80;
+        --error: #fb7185;
+        --warning: #fbbf24;
+        --info: #38bdf8;
+
+        --border: #3f3f46;
+        --shadow: rgba(0, 0, 0, 0.5);
+
+        --header-gradient-start: #222222;
+        --card-header-bg: #331e52;
+        --table-primary-bg: rgba(168, 85, 247, 0.15);
+        --table-danger-bg: rgba(248, 113, 113, 0.15);
+    }
 }
 
 /* Aplicação do tema */
@@ -65,265 +107,16 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-header {
-    background: linear-gradient(to right, #777777, var(--primary));
-    color: var(--surface);
-    padding: 1rem 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-/* Header no tema escuro */
-.dark-mode header {
-    background: linear-gradient(to right, #222222, var(--primary));
-}
-
-.dark-mode header p,
-.dark-mode header .mb-0 {
-    color: #ffffff !important;
-}
-
-nav.navbar-dark {
-    background-color: var(--background-secondary);
-}
-
-nav.navbar-dark .nav-link {
-    color: var(--text-primary) !important;
-}
-
-nav.navbar-dark .nav-link:hover {
-    color: var(--primary) !important;
-}
-
-.card {
-    background-color: var(--surface);
-    border-color: var(--border);
-    box-shadow: 0 4px 6px var(--shadow);
-    transition: box-shadow 0.3s ease;
-}
-
-.card:hover {
-    box-shadow: 0 6px 12px var(--shadow);
-}
-
-.card-header {
-    background-color: var(--background-secondary);
-    color: var(--text-primary);
-}
-
-table {
-    color: var(--text-primary);
-    border-color: var(--border);
-    background-color: var(--surface) !important;
-}
-
-.table th {
-    font-weight: 500;
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: var(--background-secondary);
-}
-
-.table-striped tbody tr:nth-of-type(even) {
-    background-color: var(--surface);
-}
-
-.table-hover tbody tr:hover {
-    background-color: var(--background-secondary);
-}
-
-.form-control {
-    background-color: var(--surface);
-    border-color: var(--border);
-    color: var(--text-primary);
-}
-
-footer {
-    background-color: var(--background-secondary);
-    color: var(--text-primary);
-    padding: 2rem 0;
-    margin-top: 2rem;
-}
-
-/* Cores específicas */
-.text-primary {
-    color: var(--primary) !important;
-}
-
-.text-danger, .text-error {
-    color: var(--error) !important;
-}
-
-.text-success {
-    color: var(--success) !important;
-}
-
-/* Ajustes para o modo escuro */
-.dark-mode .text-primary {
-    color: var(--info) !important; /* Azul mais claro para receitas no modo escuro */
-}
-
-.dark-mode .text-danger {
-    color: var(--error) !important; /* Mantendo o vermelho para despesas, mas usando a versão do tema escuro */
-}
-
-.dark-mode .text-muted {
-    color: rgba(255, 255, 255, 0.6) !important; /* Textos secundários mais visíveis no escuro */
-}
-
-a {
-    color: var(--primary);
-}
-
-a:hover {
-    color: var(--accent);
-}
-
-.btn-primary {
-    background-color: var(--primary);
-    border-color: var(--primary);
-    color: var(--surface);
-}
-
-.btn-secondary {
-    background-color: var(--secondary);
-    border-color: var(--secondary);
-    color: var(--surface);
-}
-
-.btn-success {
-    background-color: var(--success);
-    border-color: var(--success);
-}
-
-.btn-danger {
-    background-color: var(--error);
-    border-color: var(--error);
-}
-
-.border-bottom {
-    border-color: var(--border) !important;
-}
-
-/* Estilo para o seletor de tema */
-.theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.theme-switch-icon {
-    font-size: 1.5rem;
-    transition: transform 0.3s ease;
-}
-
-.dark-mode .theme-switch-icon {
-    transform: rotate(180deg);
-}
-
-/* Estilos específicos para componentes */
-.badge {
-    transition: background-color 0.3s ease;
-}
-
-/* Progresso dos projetos */
-.progress {
-    background-color: var(--background-secondary);
-}
-
-.progress-bar {
-    background-color: var(--primary);
-}
-
-.modal-content {
-    background-color: var(--surface);
-    color: var(--text-primary);
-    border-color: var(--border);
-}
-
-.modal-header, .modal-footer {
-    border-color: var(--border);
-}
-
-/* Componentes específicos */
-.table-primary, .table-primary > th, .table-primary > td {
-    background-color: rgba(126, 34, 206, 0.1) !important;
-    color: var(--text-primary);
-}
-
-.table-danger, .table-danger > th, .table-danger > td {
-    background-color: rgba(220, 53, 69, 0.1) !important;
-    color: var(--text-primary);
-}
-
-.bg-success-soft {
-    background-color: rgba(40, 167, 69, 0.1);
-}
-
-.bg-primary-soft {
-    background-color: rgba(0, 123, 255, 0.1);
-}
-
-.bg-warning-soft {
-    background-color: rgba(255, 193, 7, 0.1);
-}
-
-/* Status de indicadores */
-.status-pendente {
-    color: var(--warning);
-}
-
-.status-concluido {
-    color: var(--success);
-}
-
-.status-em-progresso {
-    color: var(--primary);
-}
-
-/* Media query para preferências do sistema */
-@media (prefers-color-scheme: dark) {
-    body:not(.light-mode):not(.dark-mode) {
-        /* Cores de fundo - Astro.js */
-        --background: #13151a;
-        --background-secondary: #1e1e2e;
-        --surface: #23262f;
-        
-        /* Cores de texto - Astro.js */
-        --text-primary: #f8fafc;
-        --text-secondary: #94a3b8;
-        
-        /* Cores de destaque - Astro.js */
-        --primary: #a855f7;       /* Roxo claro (primário) */
-        --secondary: #818cf8;     /* Índigo claro (secundário) */
-        --accent: #ff8a4c;        /* Laranja claro (destaque) */
-        
-        /* Cores funcionais */
-        --success: #34d399;       /* Verde claro (sucesso) */
-        --error: #f87171;         /* Vermelho claro (erro) */
-        --warning: #fbbf24;       /* Amarelo claro (alerta) */
-        --info: #60a5fa;          /* Azul claro (informação) */
-
-        /* Bordas */
-        --border: #2d3748;
-        --shadow: rgba(0, 0, 0, 0.5);
-    }
-}
-
-/* Estilos Gerais */
-body {
-    font-family: 'Ubuntu', sans-serif;
-    color: var(--text-primary);
-    background-color: var(--background);
-    transition: background-color 0.3s, color 0.3s;
-}
-
 /* Header */
 header {
-    background: linear-gradient(to right, #777777, var(--primary));
-    color: var(--surface);
+    background: linear-gradient(to right, var(--header-gradient-start), var(--primary));
+    color: #ffffff;
     padding: 1rem 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+header p, header .mb-0 {
+    color: #ffffff !important;
 }
 
 /* Navegação */
@@ -340,6 +133,37 @@ header {
 
 .navbar .nav-link:hover {
     background-color: rgba(255,255,255,0.1);
+    color: var(--accent) !important;
+}
+
+.navbar .nav-link.active {
+    color: var(--accent) !important;
+    font-weight: 500;
+}
+
+/* Cards */
+.card {
+    background-color: var(--surface);
+    border-color: var(--border);
+    box-shadow: 0 4px 6px var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 8px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px var(--shadow);
+}
+
+.card-header {
+    background-color: var(--card-header-bg) !important;
+    color: #ffffff !important;
+    border-radius: 8px 8px 0 0 !important;
+    border-color: var(--border);
+}
+
+.card-body {
+    color: var(--text-primary);
 }
 
 /* Seções */
@@ -353,11 +177,6 @@ h2 {
     border-bottom-color: var(--border) !important;
 }
 
-/* Ajustes para títulos no modo escuro */
-.dark-mode h2 {
-    color: var(--accent);
-}
-
 .dark-mode section#receitas h2 {
     color: var(--info);
 }
@@ -366,35 +185,21 @@ h2 {
     color: var(--error);
 }
 
-/* Cards */
-.card {
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    transition: transform 0.3s, box-shadow 0.3s;
-    background-color: var(--surface);
-    border-color: var(--border);
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.card-header {
-    border-radius: 8px 8px 0 0 !important;
-    background-color: var(--primary) !important;
-    color: white !important;
-}
-
-/* Tabelas */
+/* Tabelas - Completamente refeitas */
 .table {
     color: var(--text-primary);
     border-color: var(--border);
     background-color: var(--surface) !important;
 }
 
-.table th {
+.table th, .table td {
+    border-color: var(--border);
+}
+
+.table thead th {
     font-weight: 500;
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
@@ -406,80 +211,56 @@ h2 {
 }
 
 .table-hover tbody tr:hover {
-    background-color: var(--background-secondary);
+    background-color: rgba(126, 34, 206, 0.05);
 }
 
-/* Ajustes para o tema escuro */
-.dark-mode .table {
-    color: var(--text-primary);
-    background-color: var(--surface) !important;
+.dark-mode .table-hover tbody tr:hover {
+    background-color: rgba(168, 85, 247, 0.1);
 }
 
-.dark-mode .table-striped tbody tr:nth-of-type(odd) {
-    background-color: var(--background-secondary);
+/* Cabeçalhos específicos para tabelas */
+.table-primary thead {
+    background-color: var(--table-primary-bg) !important;
 }
 
-.dark-mode .table-striped tbody tr:nth-of-type(even) {
-    background-color: var(--surface);
+.table-danger thead {
+    background-color: var(--table-danger-bg) !important;
 }
 
-.dark-mode .table thead th {
-    background-color: var(--background-secondary);
-    color: var(--text-primary);
-}
-
-.dark-mode .table-primary thead {
-    background-color: rgba(168, 85, 247, 0.2) !important;
+.table-primary, 
+.table-primary > th, 
+.table-primary > td {
+    background-color: var(--table-primary-bg) !important;
     color: var(--text-primary);
 }
 
-.dark-mode .table-danger thead {
-    background-color: rgba(248, 113, 113, 0.2) !important;
+.table-danger, 
+.table-danger > th, 
+.table-danger > td {
+    background-color: var(--table-danger-bg) !important;
     color: var(--text-primary);
 }
 
-.dark-mode .table tbody {
-    background-color: var(--surface);
+/* Cores de texto */
+.text-primary {
+    color: var(--primary) !important;
 }
 
-.table-primary, .table-primary > th, .table-primary > td {
-    background-color: rgba(126, 34, 206, 0.1) !important;
-    color: var(--text-primary);
+.text-danger, .text-error {
+    color: var(--error) !important;
 }
 
-.table-danger, .table-danger > th, .table-danger > td {
-    background-color: rgba(220, 53, 69, 0.1) !important;
-    color: var(--text-primary);
+.text-success {
+    color: var(--success) !important;
 }
 
-.dark-mode .table-primary, 
-.dark-mode .table-primary > th, 
-.dark-mode .table-primary > td {
-    background-color: rgba(168, 85, 247, 0.2) !important;
-    color: var(--text-primary);
+.text-muted {
+    color: var(--text-secondary) !important;
 }
 
-.dark-mode .table-danger, 
-.dark-mode .table-danger > th, 
-.dark-mode .table-danger > td {
-    background-color: rgba(248, 113, 113, 0.2) !important;
-    color: var(--text-primary);
-}
-
-/* Projeto Card */
-.projeto-card {
-    height: 100%;
-    transition: transform 0.3s;
-}
-
-.projeto-card:hover {
-    transform: translateY(-5px);
-}
-
-.projeto-card .progress {
-    height: 10px;
-    border-radius: 5px;
-    background-color: var(--background-secondary);
+.dark-mode .text-muted {
+    color: var(--text-secondary) !important;
+    opacity: 0.85;
 }
 
 /* Formulários */
@@ -492,6 +273,102 @@ h2 {
 .form-control:focus, .form-select:focus {
     background-color: var(--surface);
     color: var(--text-primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(126, 34, 206, 0.25);
+}
+
+.dark-mode .form-control:focus, 
+.dark-mode .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(168, 85, 247, 0.25);
+}
+
+/* Botões */
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: #ffffff;
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+/* Links */
+a {
+    color: var(--primary);
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+/* Seletor de tema */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.theme-switch-icon {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+    color: #ffffff;
+}
+
+.dark-mode .theme-switch-icon {
+    transform: rotate(180deg);
+}
+
+/* Modal */
+.modal-content {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+.modal-header, .modal-footer {
+    border-color: var(--border);
+}
+
+/* Footer */
+footer {
+    background-color: var(--background-secondary) !important;
+    color: var(--text-primary) !important;
+    padding: 2rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+/* Status indicadores */
+.status-pendente {
+    color: var(--warning);
+}
+
+.status-concluido {
+    color: var(--success);
+}
+
+.status-em-progresso {
+    color: var(--primary);
 }
 
 /* Animações */
@@ -515,222 +392,28 @@ h2 {
     }
 }
 
-/* Customização de cores */
-.bg-success-soft {
-    background-color: rgba(25, 135, 84, 0.1);
+/* Estilos para o logotipo */
+.logo-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
 }
 
-.bg-primary-soft {
-    background-color: rgba(13, 110, 253, 0.1);
+.logo-text .presta {
+    color: #ffffff;
 }
 
-.bg-warning-soft {
-    background-color: rgba(255, 193, 7, 0.1);
-}
-
-/* Status de indicadores */
-.status-pendente {
-    color: var(--warning);
-}
-
-.status-concluido {
-    color: var(--success);
-}
-
-.status-em-progresso {
-    color: var(--primary);
-}
-
-/* Footer */
-footer {
-    border-top: 1px solid rgba(255,255,255,0.1);
-    background-color: var(--background-secondary) !important;
-    color: var(--text-primary) !important;
-}
-
-/* Links */
-a {
-    color: var(--primary);
-}
-
-a:hover {
+.logo-text .conta {
     color: var(--accent);
 }
 
-/* Modal */
-.modal-content {
-    background-color: var(--surface);
-    color: var(--text-primary);
+/* Nome da ONG */
+#ong-nome, #footer-ong-nome {
+    color: var(--accent);
 }
 
-.modal-header, .modal-footer {
-    border-color: var(--border);
-}
-
-/* Botões */
-.btn-primary {
-    background-color: var(--primary);
-    border-color: var(--primary);
-}
-
-.btn-primary:hover {
-    background-color: var(--accent);
-    border-color: var(--accent);
-}
-
-.btn-outline-primary {
-    color: var(--primary);
-    border-color: var(--primary);
-}
-
-.btn-outline-primary:hover {
-    background-color: var(--primary);
-    border-color: var(--primary);
-}
-
-.btn-secondary {
-    background-color: var(--secondary);
-    border-color: var(--secondary);
-}
-
-/* Texto */
-.text-muted {
-    color: var(--text-secondary) !important;
-}
-
-.text-primary {
-    color: var(--primary) !important;
-}
-
-.text-success {
-    color: var(--success) !important;
-}
-
-.text-danger {
-    color: var(--error) !important;
-}
-
-/* Seletor de tema */
-.theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-}
-
-.theme-switch {
-    display: inline-block;
-    height: 24px;
-    position: relative;
-    width: 50px;
-}
-
-.theme-switch input {
-    display: none;
-}
-
-.slider {
-    background-color: #ccc;
-    bottom: 0;
-    cursor: pointer;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: .4s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    background-color: white;
-    bottom: 4px;
-    content: "";
-    height: 16px;
-    left: 4px;
-    position: absolute;
-    transition: .4s;
-    width: 16px;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: var(--primary);
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
-
-[data-theme="dark"] {
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --primary-color: #4d8bf8;
-    --primary-dark: #3d71c7;
-    --primary-light: #1a2742;
-    --secondary-color: #9ca3af;
-    --success-color: #22bb66;
-    --danger-color: #e05260;
-    --warning-color: #ffd43b;
-    --info-color: #25cff2;
-    --card-bg: #1e1e1e;
-    --card-border: rgba(255,255,255,0.1);
-    --header-bg: #1a2a50;
-    --header-text: #ffffff;
-    --footer-bg: #121212;
-    --footer-text: #e0e0e0;
-    --nav-bg: #1a1a1a;
-    --nav-text: #ffffff;
-    --table-border: #444444;
-    --table-stripe: rgba(255,255,255,0.03);
-    --table-hover: rgba(255,255,255,0.05);
-    --input-bg: #2d2d2d;
-    --input-border: #444444;
-}
-
-/* Estilos específicos para os cards das organizações */
-.organizacao-card {
-    height: 100%;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.organizacao-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px var(--shadow);
-}
-
-.organizacao-card .card-title, 
-.organizacao-card .card-text, 
-.organizacao-card p {
-    color: var(--text-primary);
-}
-
-.dark-mode .organizacao-card .card-title {
-    color: var(--text-primary);
-}
-
-.dark-mode .organizacao-card .card-text,
-.dark-mode .organizacao-card p, 
-.dark-mode .organizacao-card span {
-    color: var(--text-secondary);
-}
-
-/* Garantir legibilidade no modo escuro */
-.dark-mode .text-muted {
-    color: var(--text-secondary) !important;
-    opacity: 0.9;
-}
-
-.dark-mode #lista-organizacoes .card p,
-.dark-mode #lista-organizacoes .card span,
-.dark-mode #lista-organizacoes .card div {
-    color: var(--text-primary);
-}
-
-/* Aplicação do tema para o footer */
-footer p, footer a, footer strong {
-    color: var(--text-primary);
-}
-
-/* Estilos para os ícones de contato no footer */
+/* Contatos no footer */
 .contatos-footer a {
     display: inline-block;
     margin-left: 15px;
@@ -747,43 +430,24 @@ footer p, footer a, footer strong {
     font-size: 1.5rem;
 }
 
-/* Estilos para o logotipo PrestaConta */
-.logo-text {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.5px;
+/* Cards de organizações */
+.organizacao-card {
+    height: 100%;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.logo-text .presta {
+.organizacao-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px var(--shadow);
+}
+
+.organizacao-card .card-title, 
+.organizacao-card .card-text, 
+.organizacao-card p {
     color: var(--text-primary);
 }
 
-.logo-text .conta {
-    color: var(--accent);
-}
-
-/* Nome da ONG também terá a cor de destaque */
-#footer-ong-nome {
-    color: var(--accent);
-}
-
-.logo-text-small {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    font-size: 1.5rem;
-    letter-spacing: -0.5px;
-}
-
-.logo-text-small .presta {
-    color: var(--text-primary);
-}
-
-.logo-text-small .conta {
-    color: var(--accent);
-}
-
-/* Ajustes para o tema escuro */
-.dark-mode .logo-text-small .presta {
-    color: var(--text-primary);
+.dark-mode .organizacao-card span,
+.dark-mode .organizacao-card small {
+    color: var(--text-secondary);
 } 
