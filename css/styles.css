@@ -113,15 +113,23 @@ nav.navbar-dark .nav-link:hover {
 table {
     color: var(--text-primary);
     border-color: var(--border);
+    background-color: var(--surface) !important;
+}
+
+.table th {
+    font-weight: 500;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
     background-color: var(--background-secondary);
 }
 
-.table thead th {
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: var(--surface);
+}
+
+.table-hover tbody tr:hover {
     background-color: var(--background-secondary);
-    border-color: var(--border);
 }
 
 .form-control {
@@ -226,7 +234,7 @@ a:hover {
 
 /* Componentes específicos */
 .table-primary, .table-primary > th, .table-primary > td {
-    background-color: rgba(0, 123, 255, 0.1) !important;
+    background-color: rgba(126, 34, 206, 0.1) !important;
     color: var(--text-primary);
 }
 
@@ -356,6 +364,7 @@ h2 {
 .table {
     color: var(--text-primary);
     border-color: var(--border);
+    background-color: var(--surface) !important;
 }
 
 .table th {
@@ -366,17 +375,68 @@ h2 {
     background-color: var(--background-secondary);
 }
 
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: var(--surface);
+}
+
 .table-hover tbody tr:hover {
     background-color: var(--background-secondary);
 }
 
+/* Ajustes para o tema escuro */
+.dark-mode .table {
+    color: var(--text-primary);
+    background-color: var(--surface) !important;
+}
+
+.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--background-secondary);
+}
+
+.dark-mode .table-striped tbody tr:nth-of-type(even) {
+    background-color: var(--surface);
+}
+
+.dark-mode .table thead th {
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
+}
+
+.dark-mode .table-primary thead {
+    background-color: rgba(168, 85, 247, 0.2) !important;
+    color: var(--text-primary);
+}
+
+.dark-mode .table-danger thead {
+    background-color: rgba(248, 113, 113, 0.2) !important;
+    color: var(--text-primary);
+}
+
+.dark-mode .table tbody {
+    background-color: var(--surface);
+}
+
 .table-primary, .table-primary > th, .table-primary > td {
-    background-color: var(--primary) !important;
+    background-color: rgba(126, 34, 206, 0.1) !important;
     color: var(--text-primary);
 }
 
 .table-danger, .table-danger > th, .table-danger > td {
     background-color: rgba(220, 53, 69, 0.1) !important;
+    color: var(--text-primary);
+}
+
+.dark-mode .table-primary, 
+.dark-mode .table-primary > th, 
+.dark-mode .table-primary > td {
+    background-color: rgba(168, 85, 247, 0.2) !important;
+    color: var(--text-primary);
+}
+
+.dark-mode .table-danger, 
+.dark-mode .table-danger > th, 
+.dark-mode .table-danger > td {
+    background-color: rgba(248, 113, 113, 0.2) !important;
     color: var(--text-primary);
 }
 
