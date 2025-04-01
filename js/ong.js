@@ -78,6 +78,12 @@ function carregarInformacoesONG() {
     document.getElementById('footer-ong-cnpj').textContent = `CNPJ: ${dadosOng.cnpj}`;
     document.title = `Portal de Transparência - ${dadosOng.nome}`;
     
+    // Atualizar o nome da ONG no título de boas-vindas
+    const organizacaoSpan = document.querySelector('#inicio h2 .conta');
+    if (organizacaoSpan) {
+        organizacaoSpan.textContent = dadosOng.nome;
+    }
+    
     // Descrição
     document.getElementById('ong-descricao').innerHTML = `
         <p>Este portal foi desenvolvido para garantir total transparência sobre os recursos financeiros da nossa organização.</p>
