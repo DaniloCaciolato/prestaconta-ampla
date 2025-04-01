@@ -4,7 +4,6 @@
 
 let dadosReceitas = [];
 let dadosDespesas = [];
-let dadosProjetos = [];
 let dadosOng = null;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -38,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
     dadosOng = organizacoes.find(org => org.slug === orgSlug);
     dadosReceitas = dadosONGs[orgSlug].receitas;
     dadosDespesas = dadosONGs[orgSlug].despesas;
-    dadosProjetos = dadosONGs[orgSlug].projetos;
     
     // Atualizar o título da página com o nome da ONG
     document.title = `PrestaConta - ${dadosOng.nome}`;
@@ -57,7 +55,6 @@ function inicializarPortal() {
     // Carregar dados financeiros
     carregarReceitas();
     carregarDespesas();
-    carregarProjetos();
     atualizarResumoFinanceiro();
     
     // Configurar eventos
@@ -261,78 +258,6 @@ function carregarDespesas(filtroAno = 'todos', filtroMes = 'todos', termoBusca =
         tr.innerHTML = '<td colspan="5" class="text-center">Nenhuma despesa encontrada</td>';
         tbody.appendChild(tr);
     }
-}
-
-/**
- * Carrega informações dos projetos
- */
-function carregarProjetos() {
-    const container = document.getElementById('lista-projetos');
-    container.innerHTML = '';
-    
-    dadosProjetos.forEach(projeto => {
-        const percentualConcluido = (projeto.beneficiados / projeto.metaBeneficiados) * 100;
-        const percentualOrcamento = (projeto.gastoAtual / projeto.orcamento) * 100;
-        
-        // Determinar classes CSS baseadas no status
-        let statusClass;
-        switch(projeto.status.toLowerCase()) {
-            case 'concluído':
-                statusClass = 'status-concluido';
-                break;
-            case 'em progresso':
-                statusClass = 'status-em-progresso';
-                break;
-            default:
-                statusClass = 'status-pendente';
-        }
-        
-        const div = document.createElement('div');
-        div.className = 'col-md-6 mb-4';
-        div.innerHTML = `
-            <div class="card projeto-card">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="${projeto.imagem}" class="img-fluid rounded-start h-100" alt="${projeto.nome}" style="object-fit: cover;">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">${projeto.nome}</h5>
-                            <p class="card-text">${projeto.descricao}</p>
-                            <p class="card-text"><small class="text-muted">Objetivo: ${projeto.objetivo}</small></p>
-                            
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small>Beneficiados: ${projeto.beneficiados}/${projeto.metaBeneficiados}</small>
-                                    <small>${percentualConcluido.toFixed(0)}%</small>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: ${percentualConcluido}%" 
-                                         aria-valuenow="${percentualConcluido}" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <small>Orçamento: ${formatarMoeda(projeto.gastoAtual)} de ${formatarMoeda(projeto.orcamento)}</small>
-                                    <small>${percentualOrcamento.toFixed(0)}%</small>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: ${percentualOrcamento}%" 
-                                         aria-valuenow="${percentualOrcamento}" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            
-                            <p class="card-text mt-3">
-                                <small class="text-muted">Status: <span class="${statusClass}">${projeto.status}</span></small>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        container.appendChild(div);
-    });
 }
 
 /**
