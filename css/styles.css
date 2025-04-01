@@ -158,6 +158,19 @@ footer {
     color: var(--success) !important;
 }
 
+/* Ajustes para o modo escuro */
+.dark-mode .text-primary {
+    color: var(--info) !important; /* Azul mais claro para receitas no modo escuro */
+}
+
+.dark-mode .text-danger {
+    color: var(--error) !important; /* Mantendo o vermelho para despesas, mas usando a versão do tema escuro */
+}
+
+.dark-mode .text-muted {
+    color: rgba(255, 255, 255, 0.6) !important; /* Textos secundários mais visíveis no escuro */
+}
+
 a {
     color: var(--primary);
 }
@@ -338,6 +351,19 @@ h2 {
     color: var(--primary);
     font-weight: 500;
     border-bottom-color: var(--border) !important;
+}
+
+/* Ajustes para títulos no modo escuro */
+.dark-mode h2 {
+    color: var(--accent);
+}
+
+.dark-mode section#receitas h2 {
+    color: var(--info);
+}
+
+.dark-mode section#despesas h2 {
+    color: var(--error);
 }
 
 /* Cards */
