@@ -677,6 +677,11 @@ footer p, footer a, footer strong {
     color: var(--accent);
 }
 
+/* Nome da ONG também terá a cor de destaque */
+#footer-ong-nome {
+    color: var(--accent);
+}
+
 .logo-text-small {
     font-family: 'Montserrat', sans-serif;
     font-weight: 800;
