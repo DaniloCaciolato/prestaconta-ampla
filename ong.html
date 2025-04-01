@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrestaConta - Detalhes da ONG</title>
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="img/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="logo-text"><span class="presta">Presta</span><span class="conta">Conta</span></h1>
+                    <p class="mb-0" id="ong-nome">Carregando dados da organização...</p>
+                </div>
+                <div class="col-md-6 text-md-end d-flex justify-content-end align-items-center">
+                    <p class="mb-0 me-3">Compromisso com a transparência e responsabilidade</p>
+                    <div class="theme-switch-wrapper">
+                        <i class="bi bi-moon-fill theme-switch-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#inicio">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#receitas">Receitas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#despesas">Despesas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projetos">Projetos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contato">Contato</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="bi bi-arrow-left"></i> Voltar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <section id="inicio" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">Bem-vindo ao PrestaConta</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <p id="ong-descricao">Carregando informações...</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title h5 mb-0">Resumo Financeiro</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-sm-4">
+                                    <h4 class="h2 mb-0 text-primary" id="total-receitas">R$ 0,00</h4>
+                                    <p class="text-muted">Receitas</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4 class="h2 mb-0 text-danger" id="total-despesas">R$ 0,00</h4>
+                                    <p class="text-muted">Despesas</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4 class="h2 mb-0" id="saldo">R$ 0,00</h4>
+                                    <p class="text-muted">Saldo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="receitas" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">Receitas</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <label for="filtro-ano-receitas" class="me-2">Filtrar por ano:</label>
+                            <select id="filtro-ano-receitas" class="form-select form-select-sm d-inline-block w-auto me-2">
+                                <option value="todos">Todos</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                            </select>
+                            
+                            <label for="filtro-mes-receitas" class="me-2 ms-3">Mês:</label>
+                            <select id="filtro-mes-receitas" class="form-select form-select-sm d-inline-block w-auto">
+                                <option value="todos">Todos</option>
+                                <option value="01">Janeiro</option>
+                                <option value="02">Fevereiro</option>
+                                <option value="03">Março</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Maio</option>
+                                <option value="06">Junho</option>
+                                <option value="07">Julho</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="busca-receitas" class="form-control form-control-sm" placeholder="Buscar receitas...">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="tabela-receitas">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Fonte</th>
+                                    <th>Valor (R$)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Os dados serão inseridos via JavaScript -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td colspan="3" class="text-end">Total:</td>
+                                    <td id="soma-receitas">R$ 0,00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="despesas" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">Despesas</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <label for="filtro-ano-despesas" class="me-2">Filtrar por ano:</label>
+                            <select id="filtro-ano-despesas" class="form-select form-select-sm d-inline-block w-auto me-2">
+                                <option value="todos">Todos</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                            </select>
+                            
+                            <label for="filtro-mes-despesas" class="me-2 ms-3">Mês:</label>
+                            <select id="filtro-mes-despesas" class="form-select form-select-sm d-inline-block w-auto">
+                                <option value="todos">Todos</option>
+                                <option value="01">Janeiro</option>
+                                <option value="02">Fevereiro</option>
+                                <option value="03">Março</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Maio</option>
+                                <option value="06">Junho</option>
+                                <option value="07">Julho</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="busca-despesas" class="form-control form-control-sm" placeholder="Buscar despesas...">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="tabela-despesas">
+                            <thead class="table-danger">
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Projeto</th>
+                                    <th>Valor (R$)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Os dados serão inseridos via JavaScript -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td colspan="4" class="text-end">Total:</td>
+                                    <td id="soma-despesas">R$ 0,00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projetos" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">Projetos</h2>
+            <div class="row" id="lista-projetos">
+                <!-- Os dados serão inseridos via JavaScript -->
+            </div>
+        </section>
+
+        <section id="contato" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">Contato</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="h5 mb-3">Entre em Contato</h3>
+                            <ul class="list-unstyled" id="ong-contato">
+                                <!-- Informações de contato serão inseridas via JavaScript -->
+                            </ul>
+                            <div class="mt-4" id="ong-redes">
+                                <!-- Redes sociais serão inseridas via JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 id="footer-ong-nome" class="mb-1">Carregando...</h5>
+                    <p id="footer-ong-cnpj">CNPJ: --</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>© 2023 Todos os direitos reservados</p>
+                    <p class="contatos-footer">
+                        <a href="mailto:danilocaciolato@gmail.com" class="me-3" title="Email: danilocaciolato@gmail.com"><i class="bi bi-envelope fs-4"></i></a>
+                        <a href="https://wa.me/5518996321490" target="_blank" title="WhatsApp: +55 18 99632-1490"><i class="bi bi-whatsapp fs-4"></i></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para exibir fotos das despesas -->
+    <div class="modal fade" id="despesaModal" tabindex="-1" aria-labelledby="despesaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="despesaModalLabel">Detalhes da Despesa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="" id="despesa-imagem" class="img-fluid rounded" alt="Imagem da despesa">
+                        </div>
+                        <div class="col-md-6">
+                            <h5 id="despesa-titulo"></h5>
+                            <p><strong>Data:</strong> <span id="despesa-data"></span></p>
+                            <p><strong>Categoria:</strong> <span id="despesa-categoria"></span></p>
+                            <p><strong>Projeto:</strong> <span id="despesa-projeto"></span></p>
+                            <p><strong>Valor:</strong> <span id="despesa-valor"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/dados.js"></script>
+    <script src="js/ong.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html> 
