@@ -49,12 +49,18 @@ document.addEventListener('DOMContentLoaded', function() {
  * Inicializa todas as funcionalidades do portal
  */
 function inicializarPortal() {
+    // Adicionar classe específica da ONG ao body
+    const ongSlug = new URLSearchParams(window.location.search).get('ong') || 'ampla';
+    document.body.classList.add(`ong-${ongSlug}`);
+    console.log('Classe adicionada ao body:', `ong-${ongSlug}`);
+    
     // Carregar informações da ONG
     carregarInformacoesONG();
     
     // Carregar dados financeiros
     carregarReceitas();
     carregarDespesas();
+    carregarLivrosContabeis();
     atualizarResumoFinanceiro();
     
     // Configurar eventos
@@ -82,13 +88,18 @@ function carregarInformacoesONG() {
     const ongNomeTitulo = document.getElementById('ong-nome-titulo');
     if (ongNomeTitulo) {
         ongNomeTitulo.textContent = dadosOng.nome;
+        ongNomeTitulo.classList.add('titulo-moderno');
     }
     
     // Descrição
-    document.getElementById('ong-descricao').innerHTML = `
-        <p>Este portal foi desenvolvido para garantir total transparência sobre os recursos financeiros da nossa organização.</p>
-        <p>${dadosOng.descricao}</p>
-    `;
+    const descricaoElement = document.getElementById('ong-descricao');
+    if (descricaoElement) {
+        descricaoElement.classList.add('texto-moderno');
+        descricaoElement.innerHTML = `
+            <p>Este portal foi desenvolvido para garantir total transparência sobre os recursos financeiros da nossa organização.</p>
+            <p>${dadosOng.descricao}</p>
+        `;
+    }
     
     // Contato
     const contatoContainer = document.getElementById('ong-contato');
@@ -333,6 +344,33 @@ function configurarFiltros() {
         const busca = document.getElementById('busca-despesas').value;
         carregarDespesas(ano, mes, busca);
     });
+    
+    // Filtro de ano para livros contábeis
+    const filtroAnoLivros = document.getElementById('filtro-ano-livros');
+    if (filtroAnoLivros) {
+        console.log('Configurando evento change para filtro de livros contábeis');
+        filtroAnoLivros.addEventListener('change', function() {
+            const ano = String(this.value); // Garantir que é string
+            console.log('Evento change do filtro de livros:', ano, 'Tipo:', typeof ano);
+            const busca = document.getElementById('busca-livros').value;
+            carregarLivrosContabeis(ano, busca);
+        });
+        
+        // Inicializar com o valor atual para corrigir o estado inicial
+        const anoInicial = String(filtroAnoLivros.value);
+        console.log('Inicializando com valor:', anoInicial, 'Tipo:', typeof anoInicial);
+        
+        // Forçar carregamento inicial com o valor do select
+        setTimeout(() => {
+            if (anoInicial && anoInicial !== 'todos') {
+                console.log('Carregando livros com filtro inicial:', anoInicial);
+                const buscaInicial = document.getElementById('busca-livros').value;
+                carregarLivrosContabeis(anoInicial, buscaInicial);
+            }
+        }, 500);
+    } else {
+        console.error('Elemento de filtro de livros não encontrado');
+    }
 }
 
 /**
@@ -354,6 +392,16 @@ function configurarBuscas() {
         const mes = document.getElementById('filtro-mes-despesas').value;
         carregarDespesas(ano, mes, busca);
     });
+    
+    // Busca para livros contábeis
+    const buscaLivros = document.getElementById('busca-livros');
+    if (buscaLivros) {
+        buscaLivros.addEventListener('input', function() {
+            const busca = this.value;
+            const ano = document.getElementById('filtro-ano-livros').value;
+            carregarLivrosContabeis(ano, busca);
+        });
+    }
 }
 
 /**
@@ -386,4 +434,144 @@ function configurarModais() {
             }
         }
     });
+}
+
+/**
+ * Carrega os livros contábeis
+ */
+function carregarLivrosContabeis(filtroAno = 'todos', termoBusca = '') {
+    const containerLivros = document.getElementById('livros-contabeis');
+    const semLivros = document.getElementById('sem-livros');
+    
+    if (!containerLivros) {
+        console.error('Container de livros não encontrado');
+        return;
+    }
+    
+    // Limpar o container
+    containerLivros.innerHTML = '';
+    
+    console.log('Filtro de ano aplicado:', filtroAno, 'Tipo:', typeof filtroAno);
+    
+    // Dados de exemplo para os livros contábeis - Recriando os dados em cada chamada
+    const livros = gerarLivrosContabeis();
+    
+    // Aplicar filtros
+    let livrosFiltrados = livros;
+    
+    if (filtroAno !== 'todos') {
+        // Garantir que a comparação seja feita entre strings
+        const filtroAnoString = String(filtroAno);
+        console.log('Filtrando por ano:', filtroAnoString, 'Tipo:', typeof filtroAnoString);
+        
+        livrosFiltrados = livrosFiltrados.filter(livro => {
+            console.log('Comparando:', livro.ano, typeof livro.ano, 'com', filtroAnoString, 'Resultado:', livro.ano === filtroAnoString);
+            return livro.ano === filtroAnoString;
+        });
+        
+        console.log('Livros filtrados por ano:', livrosFiltrados.length, 'Usando filtro:', filtroAnoString);
+    }
+    
+    if (termoBusca) {
+        const termo = termoBusca.toLowerCase();
+        livrosFiltrados = livrosFiltrados.filter(livro => 
+            livro.tipo.toLowerCase().includes(termo)
+        );
+    }
+    
+    // Exibir ou ocultar a mensagem de "sem livros"
+    if (livrosFiltrados.length === 0) {
+        containerLivros.style.display = 'none';
+        semLivros.style.display = 'block';
+        return;
+    } else {
+        containerLivros.style.display = 'flex';
+        semLivros.style.display = 'none';
+    }
+    
+    // Renderizar os livros
+    livrosFiltrados.forEach(livro => {
+        const card = document.createElement('div');
+        card.className = 'col';
+        card.innerHTML = `
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi ${livro.icone} display-1 ${livro.cor} mb-3"></i>
+                    <h5 class="card-title">${livro.tipo}</h5>
+                    <p class="card-text"><small class="text-muted">Ano: ${livro.ano}</small></p>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="${livro.arquivo}" class="btn btn-primary btn-sm" target="_blank">
+                        <i class="bi bi-download"></i> Download
+                    </a>
+                    <button class="btn btn-secondary btn-sm" onclick="visualizarDocumento(${livro.id})">
+                        <i class="bi bi-eye"></i> Visualizar
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        containerLivros.appendChild(card);
+    });
+}
+
+/**
+ * Gera os dados para os livros contábeis
+ */
+function gerarLivrosContabeis() {
+    return [
+        {
+            id: 1,
+            tipo: 'Balanço Patrimonial',
+            ano: '2024',
+            arquivo: '#',
+            icone: 'bi-file-earmark-text',
+            cor: 'text-primary'
+        },
+        {
+            id: 2,
+            tipo: 'Balancete',
+            ano: '2024',
+            arquivo: '#',
+            icone: 'bi-file-earmark-ruled',
+            cor: 'text-success'
+        },
+        {
+            id: 3,
+            tipo: 'Demonstração do Resultado',
+            ano: '2024',
+            arquivo: '#',
+            icone: 'bi-file-earmark-bar-graph',
+            cor: 'text-danger'
+        },
+        {
+            id: 4,
+            tipo: 'Notas Explicativas',
+            ano: '2024',
+            arquivo: '#',
+            icone: 'bi-file-earmark-text',
+            cor: 'text-info'
+        },
+        {
+            id: 5,
+            tipo: 'Balanço Patrimonial',
+            ano: '2025',
+            arquivo: '#',
+            icone: 'bi-file-earmark-text',
+            cor: 'text-primary'
+        },
+        {
+            id: 6,
+            tipo: 'Balancete',
+            ano: '2025',
+            arquivo: '#',
+            icone: 'bi-file-earmark-ruled',
+            cor: 'text-success'
+        }
+    ];
+}
+
+// Visualizar documento
+function visualizarDocumento(livroId) {
+    alert(`Visualização do documento ID ${livroId} em desenvolvimento.`);
 } 

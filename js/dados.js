@@ -6,22 +6,22 @@
 const organizacoes = [
     {
         id: 1,
-        nome: "Associação Beneficente Esperança",
-        slug: "esperanca",
+        nome: "Associação de Assistência ao Menor de Platina",
+        slug: "ampla",
         descricao: "Trabalhamos para melhorar a vida de crianças e adolescentes em situação de vulnerabilidade social por meio de programas educacionais e de saúde.",
-        cnpj: "12.345.678/0001-90",
+        cnpj: "49.892.987/0001-95",
         contato: {
-            endereco: "Rua das Flores, 123 - Centro - São Paulo/SP",
-            telefone: "(11) 1234-5678",
-            email: "contato@esperanca.org.br",
-            horario: "Segunda a Sexta: 9h às 18h"
+            endereco: "Rua Ismael Benedito de Camargo, 583 - Centro - Platina/SP",
+            telefone: "(18) 3354-1181",
+            email: "aampla@gmail.com",
+            horario: "Segunda a Sexta: 8h às 17h"
         },
         redesSociais: {
-            facebook: "https://facebook.com/esperanca",
-            instagram: "https://instagram.com/esperanca",
+            facebook: "https://www.facebook.com/ampla2014ampla/",
+            instagram: "https://www.instagram.com/projetoamplaeduca?igsh=MWRoZXpxamJheXh5eg==",
             whatsapp: "https://wa.me/5511912345678"
         },
-        imagem: "https://res.cloudinary.com/dyxopkrxl/image/upload/v1743507646/cld-sample-5.jpg"
+        imagem: "./img/logo-ampla.png"
     },
     {
         id: 2,
@@ -46,8 +46,8 @@ const organizacoes = [
 
 // Banco de dados das ONGs
 const dadosONGs = {
-    // Associação Beneficente Esperança
-    "esperanca": {
+    // Associação de Assistência ao Menor de Platina
+    "ampla": {
         // Receitas
         receitas: [
             {
@@ -181,6 +181,70 @@ const dadosONGs = {
                 gastoAtual: 60000.00,
                 status: 'Em progresso',
                 imagem: 'https://res.cloudinary.com/dyxopkrxl/image/upload/v1743507646/cld-sample-3.jpg'
+            }
+        ],
+
+        // Galeria
+        galeria: [
+            {
+                id: 1,
+                titulo: "Alunos da Ampla",
+                descricao: "Sala de aula.",
+                data: "2025-02-27",
+                evento: "Projeto Ampla",
+                ano: "2025",
+                mes: "02",
+                imagem: "https://res.cloudinary.com/dyxopkrxl/image/upload/v1743559847/SALA2_rwwxuj.png"
+            },
+            {
+                id: 2,
+                titulo: "Alunos da Ampla",
+                descricao: "Sala de aula.",
+                data: "2025-02-27",
+                evento: "Projeto Ampla",
+                ano: "2025",
+                mes: "02",
+                imagem: "https://res.cloudinary.com/dyxopkrxl/image/upload/v1743559846/SALA3_wkm3dm.png"
+            },
+            {
+                id: 3,
+                titulo: "Alunos da Ampla",
+                descricao: "Sala de aula.",
+                data: "2025-02-27",
+                evento: "Projeto Ampla",
+                ano: "2025",
+                mes: "02",
+                imagem: "https://res.cloudinary.com/dyxopkrxl/image/upload/v1743559846/SALA4_tpedrm.png"
+            },
+            {
+                id: 4,
+                titulo: "Alunos da Ampla",
+                descricao: "Sala de aula.",
+                data: "2025-02-27",
+                evento: "Projeto Ampla",
+                ano: "2025",
+                mes: "02",
+                imagem: "https://res.cloudinary.com/dyxopkrxl/image/upload/v1743559846/SALA1_ygev51.png"
+            },
+            {
+                id: 5,
+                titulo: "Carvanal Ampla",
+                descricao: "Carnaval",
+                data: "2025-02-28",
+                evento: "Recreação",
+                ano: "2025",
+                mes: "02",
+                imagem: "https://res.cloudinary.com/dyxopkrxl/image/upload/v1743559848/CARNAVAL1_ryjxue.png"
+            },
+            {
+                id: 6,
+                titulo: "Carvanal Ampla",
+                descricao: "Carnaval",
+                data: "2025-02-28",
+                evento: "Recreação",
+                ano: "2025",
+                mes: "02",
+                imagem: "https://res.cloudinary.com/dyxopkrxl/image/upload/v1743559847/CARNAVAL2_itwevb.png?t=202407312050"
             }
         ]
     },

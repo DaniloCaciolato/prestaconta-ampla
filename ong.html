@@ -9,9 +9,547 @@
     <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            background-color: #8A2BE2 !important;
+            border-color: #8A2BE2 !important;
+            color: white !important;
+        }
+        
+        /* Alternador de tema aprimorado */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.2);
+            background-color: rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+        
+        .theme-switch-wrapper:hover {
+            transform: scale(1.1);
+            border-color: rgba(255,255,255,0.5);
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .theme-switch-wrapper:active {
+            transform: scale(0.95);
+        }
+        
+        .theme-switch-icon {
+            font-size: 1.25rem;
+            color: white;
+            transition: all 0.5s ease;
+            display: block;
+        }
+        
+        /* Animação para o ícone de tema */
+        .theme-switch-wrapper:hover .theme-switch-icon {
+            animation: pulse 1s ease;
+        }
+        
+        /* Estilos específicos para tema escuro */
+        body.dark-mode {
+            background-color: #121318 !important;
+            color: #f1f5f9 !important;
+        }
+        
+        body.dark-mode header {
+            background: linear-gradient(to right, #222222, #7e22ce) !important;
+        }
+        
+        body.dark-mode .navbar {
+            background-color: #1a1c25 !important;
+        }
+        
+        body.dark-mode .navbar .nav-link {
+            color: #f1f5f9 !important;
+        }
+        
+        body.dark-mode .card {
+            background-color: #23252f !important;
+            border-color: #3f3f46 !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
+        }
+        
+        body.dark-mode .card-header:not(.bg-primary):not(.text-white) {
+            background-color: #331e52 !important;
+            color: #f1f5f9 !important;
+        }
+        
+        body.dark-mode .table {
+            color: #f1f5f9 !important;
+            background-color: #23252f !important;
+        }
+        
+        body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #1a1c25 !important;
+        }
+        
+        body.dark-mode .form-control,
+        body.dark-mode .form-select {
+            background-color: #23252f !important;
+            border-color: #3f3f46 !important;
+            color: #f1f5f9 !important;
+        }
+        
+        body.dark-mode footer {
+            background-color: #1a1c25 !important;
+            color: #f1f5f9 !important;
+        }
+        
+        body.dark-mode .text-muted {
+            color: #cbd5e1 !important;
+        }
+        
+        /* Suavizar a transição entre temas */
+        body, body * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Estilos para o menu principal com animação moderna */
+        .navbar-nav {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .navbar-nav .nav-item {
+            position: relative;
+            margin: 0 10px; /* Aumentado o espaçamento entre itens */
+        }
+        
+        .navbar-nav .nav-link {
+            padding: 12px 5px; /* Aumentado o padding vertical */
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease, transform 0.3s ease;
+            text-align: center;
+        }
+        
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 5px;
+            left: 50%;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            transform: translateX(-50%);
+            transition: width 0.4s ease;
+            border-radius: 3px;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            transform: translateY(-2px);
+        }
+        
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 80%;
+        }
+        
+        .navbar-nav .nav-link.active {
+            font-weight: 700;
+        }
+        
+        /* Efeito de destaque nos itens do menu */
+        @keyframes highlight {
+            0% {
+                background-position: -100% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+        
+        .navbar-nav .nav-item:hover .nav-link {
+            animation: highlight 1.5s ease-in-out;
+            background: linear-gradient(90deg, 
+                            rgba(255,255,255,0) 0%, 
+                            rgba(255,255,255,0.2) 25%, 
+                            rgba(255,255,255,0.2) 75%, 
+                            rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            background-repeat: no-repeat;
+        }
+        
+        /* Estilos específicos para a AMPLA (azul e branco) */
+        body.ong-ampla {
+            background-color: #f5f9ff;
+            font-family: 'Ubuntu', sans-serif;
+        }
+        
+        body.ong-ampla header,
+        body.ong-ampla footer {
+            background-color: #0047AB;
+            color: white;
+        }
+        
+        body.ong-ampla .navbar {
+            background-color: #003380;
+        }
+        
+        body.ong-ampla .conta {
+            color: #0047AB;
+        }
+        
+        body.ong-ampla #inicio h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #0047AB, #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 2px 4px rgba(0, 71, 171, 0.2);
+            margin-bottom: 1rem;
+        }
+        
+        body.ong-ampla .titulo-moderno {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #0047AB, #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            padding: 0 10px;
+        }
+        
+        body.ong-ampla .titulo-moderno::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            bottom: -10px;
+            left: 0;
+            background: linear-gradient(90deg, transparent, #0047AB, transparent);
+            border-radius: 50px;
+        }
+        
+        body.ong-ampla #ong-descricao,
+        body.ong-ampla .texto-moderno {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            letter-spacing: 0.2px;
+            color: #444;
+            text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+        
+        body.ong-ampla .card {
+            box-shadow: 0 3px 10px rgba(0, 71, 171, 0.1);
+            border-radius: 8px;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        body.ong-ampla .card:hover {
+            box-shadow: 0 5px 15px rgba(0, 71, 171, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        body.ong-ampla .card-header {
+            background-color: #e6f0ff;
+            border-top-left-radius: 8px !important;
+            border-top-right-radius: 8px !important;
+        }
+        
+        body.ong-ampla .btn-primary {
+            background-color: #0047AB;
+            border-color: #0047AB;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 71, 171, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        body.ong-ampla .btn-primary:hover {
+            background-color: #003380;
+            border-color: #003380;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 71, 171, 0.4);
+        }
+        
+        body.ong-ampla .table-primary {
+            background-color: #e6f0ff;
+        }
+        
+        body.ong-ampla .text-primary {
+            color: #0047AB !important;
+        }
+        
+        body.ong-ampla .back-to-top {
+            background-color: #0047AB !important;
+            border-color: #0047AB !important;
+        }
+        
+        body.ong-ampla section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #0047AB;
+            letter-spacing: -0.5px;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        body.ong-ampla section h2:after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #0047AB, #0080ff);
+            bottom: -1px;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        /* Estilos para o carrossel da galeria */
+        .galeria-container {
+            position: relative;
+            overflow: visible;
+        }
+        
+        .galeria-navegacao {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 71, 171, 0.8);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .galeria-navegacao:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .galeria-prev {
+            left: 10px;
+        }
+        
+        .galeria-next {
+            right: 10px;
+        }
+        
+        #galeria-carrossel {
+            min-height: 500px;
+            position: relative;
+            margin-top: 2rem;
+            border-top: 1px solid #eee;
+            padding-top: 2rem;
+            display: block !important;
+        }
+        
+        .carousel-item {
+            transition: all 0.4s ease;
+            opacity: 0;
+            visibility: hidden;
+            height: 0;
+        }
+        
+        .carousel-item.active {
+            opacity: 1;
+            visibility: visible;
+            height: auto;
+        }
+        
+        #carousel-inner {
+            width: 100%;
+            position: relative;
+            min-height: 400px;
+        }
+        
+        /* Estilo para quando tiver fotos no carrossel */
+        .galeria-titulo {
+            margin-top: 2rem;
+            text-align: center;
+            color: #0047AB;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+        
+        /* Estilos para mini-carrossel nas fotos individuais */
+        .foto-carrossel {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .navegacao-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+            padding: 0 10px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%);
+        }
+        
+        .foto-carrossel:hover .navegacao-overlay {
+            opacity: 1;
+        }
+        
+        .galeria-navegacao.galeria-prev-mini,
+        .galeria-navegacao.galeria-next-mini {
+            width: 35px;
+            height: 35px;
+            background-color: rgba(0, 71, 171, 0.9);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            opacity: 0.9;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            font-size: 1.2rem;
+        }
+        
+        .galeria-navegacao.galeria-prev-mini:hover,
+        .galeria-navegacao.galeria-next-mini:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            background-color: rgba(0, 71, 171, 1);
+        }
+        
+        .img-atualizada {
+            animation: pulse-border 2s ease;
+        }
+        
+        @keyframes pulse-border {
+            0% { border: 2px solid transparent; }
+            25% { border: 2px solid green; }
+            75% { border: 2px solid green; }
+            100% { border: 2px solid transparent; }
+        }
+        
+        /* Estilos para o novo carrossel de páginas */
+        .paginas-container {
+            overflow: hidden;
+            position: relative;
+            margin: 0 30px; /* Reduz o espaço lateral para que não saia do quadro */
+            padding: 0;
+            width: calc(100% - 60px); /* Ajusta a largura para compensar as margens */
+            max-width: 100%;
+        }
+        
+        .paginas-wrapper {
+            display: flex;
+            transition: transform 0.5s ease;
+            width: 100%;
+        }
+        
+        .pagina {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0 5px;
+            width: 100%;
+        }
+        
+        .carrossel-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            border-radius: 50%;
+            background-color: rgba(0, 71, 171, 0.8);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.9;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+        }
+        
+        .carrossel-control:hover {
+            opacity: 1;
+            background-color: rgba(0, 71, 171, 1);
+        }
+        
+        .carrossel-prev {
+            left: -5px; /* Move o botão mais para dentro */
+        }
+        
+        .carrossel-next {
+            right: -5px; /* Move o botão mais para dentro */
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -42,10 +580,25 @@
                         <a class="nav-link active" href="#inicio">Início</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#mural">Mural de Avisos</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#receitas">Receitas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#despesas">Despesas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#galeria">Galeria</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#livros">Livros Contábeis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#relatorios">Relatórios de Atividade</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#diretoria">Diretoria</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#contato">Contato</a>
@@ -60,31 +613,91 @@
 
     <main class="container my-5">
         <section id="inicio" class="mb-5">
-            <h2 class="border-bottom pb-2 mb-4">Bem-vindo ao PrestaConta <span class="conta" id="ong-nome-titulo"></span></h2>
-            <div class="row">
-                <div class="col-md-6">
-                    <p id="ong-descricao">Carregando informações...</p>
+            <div class="row align-items-center mb-4">
+                <div class="col-md-3 text-end">
+                    <img src="./img/logo-ampla.png" alt="Logo AMPLA" class="img-fluid" style="max-height: 180px;">
                 </div>
                 <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title h5 mb-0">Resumo Financeiro</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="row text-center">
-                                <div class="col-sm-4">
-                                    <h4 class="h2 mb-0 text-primary" id="total-receitas">R$ 0,00</h4>
-                                    <p class="text-muted">Receitas</p>
+                    <h2 class="text-center">
+                        <span class="titulo-moderno" id="ong-nome-titulo"></span>
+                    </h2>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 mx-auto text-center">
+                    <p id="ong-descricao" class="texto-moderno">Carregando informações...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="mural" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">Mural de Avisos</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <!-- Destaque principal -->
+                        <div class="col-md-12 mb-4">
+                            <div class="card bg-light border-primary">
+                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                    <h3 class="h5 mb-0">Edital Aberto: Matrículas 2025</h3>
+                                    <span class="badge bg-warning">Destaque</span>
                                 </div>
-                                <div class="col-sm-4">
-                                    <h4 class="h2 mb-0 text-danger" id="total-despesas">R$ 0,00</h4>
-                                    <p class="text-muted">Despesas</p>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3 mb-md-0">
+                                            <img src="https://via.placeholder.com/300x200" class="img-fluid rounded" alt="Imagem do edital">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p class="card-text">Estão abertas as matrículas para o ano letivo de 2025. Temos vagas para crianças de 6 a 12 anos em nossos programas educacionais.</p>
+                                            <p class="mb-2"><strong>Período de inscrição:</strong> 01/11/2024 a 15/12/2024</p>
+                                            <p class="mb-3"><strong>Documentos necessários:</strong> Certidão de nascimento, comprovante de residência, cartão de vacinação.</p>
+                                            <a href="#" class="btn btn-primary">Ver detalhes</a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <h4 class="h2 mb-0" id="saldo">R$ 0,00</h4>
-                                    <p class="text-muted">Saldo</p>
+                                <div class="card-footer text-muted">
+                                    Publicado em: 01/11/2024
                                 </div>
                             </div>
+                        </div>
+                        
+                        <!-- Avisos normais (linha com 2 colunas) -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h3 class="h5 mb-0">Resultado do Processo Seletivo</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">O resultado do processo seletivo para novos educadores está disponível. Confira a lista de aprovados no link abaixo.</p>
+                                    <a href="#" class="btn btn-primary btn-sm">Ver mais</a>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Publicado em: 15/10/2024
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h3 class="h5 mb-0">Campanha de Doação de Materiais</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">Estamos arrecadando materiais escolares para o próximo ano letivo. Contribua com cadernos, lápis, mochilas e outros itens.</p>
+                                    <a href="#" class="btn btn-primary btn-sm">Como ajudar</a>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Publicado em: 05/10/2024
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Botão para ver mais avisos -->
+                        <div class="col-12 text-center mt-3">
+                            <button class="btn btn-outline-primary" id="ver-mais-avisos">
+                                Ver mais avisos <i class="bi bi-chevron-down"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -210,6 +823,296 @@
             </div>
         </section>
 
+        <section id="galeria" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">Galeria de Fotos</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <label for="filtro-ano-galeria" class="me-2">Filtrar por ano:</label>
+                            <select id="filtro-ano-galeria" class="form-select form-select-sm d-inline-block w-auto me-2">
+                                <option value="todos">Todos</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                            </select>
+                            
+                            <label for="filtro-mes-galeria" class="me-2 ms-3">Mês:</label>
+                            <select id="filtro-mes-galeria" class="form-select form-select-sm d-inline-block w-auto">
+                                <option value="todos">Todos</option>
+                                <option value="01">Janeiro</option>
+                                <option value="02">Fevereiro</option>
+                                <option value="03">Março</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Maio</option>
+                                <option value="06">Junho</option>
+                                <option value="07">Julho</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="busca-galeria" class="form-control form-control-sm" placeholder="Buscar fotos...">
+                        </div>
+                    </div>
+                    
+                    <div class="galeria-container mb-4">
+                        <div id="galeria-grid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                            <!-- Todas as fotos serão exibidas aqui -->
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4" id="sem-fotos" style="display: none;">
+                        <p class="text-muted">Nenhuma foto encontrada para o período selecionado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="livros" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">Livros Contábeis</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <label for="filtro-ano-livros" class="me-2">Filtrar por ano:</label>
+                            <select id="filtro-ano-livros" class="form-select form-select-sm d-inline-block w-auto me-2">
+                                <option value="todos">Todos</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                            </select>
+                            <button id="reset-filtro-livros" class="btn btn-sm btn-outline-secondary ms-2" type="button">
+                                Limpar Filtro
+                            </button>
+                        </div>
+                        <div>
+                            <input type="text" id="busca-livros" class="form-control form-control-sm" placeholder="Buscar livros...">
+                        </div>
+                    </div>
+                    
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="livros-contabeis">
+                        <!-- Exemplo de cartão de livro (será gerado via JavaScript) -->
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-file-earmark-text display-1 text-primary mb-3"></i>
+                                    <h5 class="card-title">Balanço Patrimonial</h5>
+                                    <p class="card-text"></p>
+                                    <p class="card-text"><small class="text-muted">Ano: 2024</small></p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="#" class="btn btn-primary btn-sm" target="_blank">
+                                        <i class="bi bi-download"></i> Download
+                                    </a>
+                                    <button class="btn btn-secondary btn-sm">
+                                        <i class="bi bi-eye"></i> Visualizar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mais exemplos de livros serão adicionados via JavaScript -->
+                    </div>
+                    
+                    <div class="text-center mt-4" id="sem-livros" style="display: none;">
+                        <p class="text-muted">Nenhum livro contábil encontrado para o período selecionado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="relatorios" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">Relatórios de Atividade</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <label for="filtro-ano-relatorios" class="me-2">Filtrar por ano:</label>
+                            <select id="filtro-ano-relatorios" class="form-select form-select-sm d-inline-block w-auto me-2">
+                                <option value="todos">Todos</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                            </select>
+                            
+                            <label for="filtro-mes-relatorios" class="me-2 ms-3">Mês:</label>
+                            <select id="filtro-mes-relatorios" class="form-select form-select-sm d-inline-block w-auto">
+                                <option value="todos">Todos</option>
+                                <option value="01">Janeiro</option>
+                                <option value="02">Fevereiro</option>
+                                <option value="03">Março</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Maio</option>
+                                <option value="06">Junho</option>
+                                <option value="07">Julho</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="busca-relatorios" class="form-control form-control-sm" placeholder="Buscar relatórios...">
+                        </div>
+                    </div>
+                    
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="lista-relatorios">
+                        <!-- Exemplo de cartão de relatório (será gerado via JavaScript) -->
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-file-pdf display-1 text-danger mb-3"></i>
+                                    <h5 class="card-title">Relatório de Atividades</h5>
+                                    <p class="card-text"></p>
+                                    <p class="card-text"><small class="text-muted">Ano: 2024</small></p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="#" class="btn btn-primary btn-sm" target="_blank">
+                                        <i class="bi bi-download"></i> Download
+                                    </a>
+                                    <a href="#" class="btn btn-secondary btn-sm" target="_blank">
+                                        <i class="bi bi-eye"></i> Visualizar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mais exemplos de relatórios serão adicionados via JavaScript -->
+                    </div>
+                    
+                    <div class="text-center mt-4" id="sem-relatorios" style="display: none;">
+                        <p class="text-muted">Nenhum relatório de atividade encontrado para o período selecionado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="diretoria" class="mb-5">
+            <h2 class="border-bottom pb-2 mb-4">Quadro de Diretoria</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <h5 class="fw-bold">Mandato: 14/01/2025 - 14/01/2027</h5>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title h5 mb-0">Diretoria Executiva</h3>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>Presidente:</strong>
+                                                <span>Claudinir Ladeira de Oliveira</span>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>Vice-Presidente:</strong>
+                                                <span>Rubens Bernini</span>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>1° Secretário:</strong>
+                                                <span>Fernanda Maria de Lima</span>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>2° Secretário:</strong>
+                                                <span>Juliana de Fátima Oliveira Santos</span>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>1° Tesoureiro:</strong>
+                                                <span>Maiara Tathiane de Souza Carvalho</span>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>2° Tesoureiro:</strong>
+                                                <span>Bruna Natalia Rodrigues da Silva</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title h5 mb-0">Conselho Fiscal</h3>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>1:</strong>
+                                                <span>Vera Lucia Bezerra</span>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>2:</strong>
+                                                <span>Fátima Aparecida Nogueira dos Reis</span>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>3:</strong>
+                                                <span>José Joaquim Alves Pereira</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title h5 mb-0">Suplentes do Conselho Fiscal</h3>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>1:</strong>
+                                                <span>Airton Costa</span>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>2:</strong>
+                                                <span>Neusa Aparecida Santos Silva</span>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-between">
+                                                <strong>3:</strong>
+                                                <span>Danieli Cristina da Silva Gonçalves</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="contato" class="mb-5">
             <h2 class="border-bottom pb-2 mb-4">Contato</h2>
             <div class="row">
@@ -277,10 +1180,675 @@
         </div>
     </div>
 
+    <!-- Modal para exibir fotos em tamanho ampliado -->
+    <div class="modal fade" id="fotoModal" tabindex="-1" aria-labelledby="fotoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fotoModalLabel">Visualização da Foto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <img src="" id="foto-ampliada" class="img-fluid rounded" alt="Foto ampliada">
+                        </div>
+                        <div class="col-md-4">
+                            <h5 id="foto-titulo"></h5>
+                            <p id="foto-descricao"></p>
+                            <p><strong>Data:</strong> <span id="foto-data"></span></p>
+                            <p><strong>Evento:</strong> <span id="foto-evento"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão Voltar ao Topo -->
+    <a id="back-to-top" href="#" class="btn btn-lg back-to-top" role="button">
+        <i class="bi bi-arrow-up"></i>
+    </a>
+
+    <script>
+        // Script para o botão de voltar ao topo
+        document.addEventListener('DOMContentLoaded', function() {
+            const backToTopButton = document.getElementById('back-to-top');
+            
+            // Função para verificar a posição da rolagem
+            function checkScroll() {
+                // Mostra o botão depois de rolar 300px
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('show');
+                } else {
+                    backToTopButton.classList.remove('show');
+                }
+            }
+            
+            // Verifica na inicialização
+            checkScroll();
+            
+            // Verifica quando o usuário rola a página
+            window.addEventListener('scroll', checkScroll);
+            
+            // Volta para o topo quando o botão é clicado
+            backToTopButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Script para carregar e filtrar a galeria de fotos
+        const semFotos = document.getElementById('sem-fotos');
+        const filtroAnoGaleria = document.getElementById('filtro-ano-galeria');
+        const filtroMesGaleria = document.getElementById('filtro-mes-galeria');
+        const buscaGaleria = document.getElementById('busca-galeria');
+        
+        // Carregar as fotos inicialmente quando o DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM carregado, iniciando carregamento de fotos');
+            
+            // Verificar se os elementos da galeria existem
+            const gridContainer = document.getElementById('galeria-grid');
+            console.log('Elemento da galeria:', gridContainer ? 'Encontrado' : 'Não encontrado');
+            
+            // Inicializa a galeria
+            setTimeout(() => {
+                console.log('Chamando carregarFotos com timeout');
+                carregarFotos();
+            }, 500);
+            
+            // Adiciona eventos aos filtros
+            if (filtroAnoGaleria) filtroAnoGaleria.addEventListener('change', carregarFotos);
+            if (filtroMesGaleria) filtroMesGaleria.addEventListener('change', carregarFotos);
+            if (buscaGaleria) buscaGaleria.addEventListener('input', carregarFotos);
+        });
+        
+        // Adicionar listeners de evento para navegação depois que as fotos são carregadas
+        function adicionarEventListenersCarrossel() {
+            // Esta função não é mais necessária com o novo sistema de carrossel
+            console.log('adicionarEventListenersCarrossel não é mais necessária');
+        }
+        
+        // Novas funções para navegação de fotos individuais
+        function moverFotoAnterior(fotoId, event) {
+            // Esta função não é mais necessária com o novo sistema de carrossel
+            console.log('moverFotoAnterior não é mais necessária');
+        }
+        
+        function moverFotoProxima(fotoId, event) {
+            // Esta função não é mais necessária com o novo sistema de carrossel
+            console.log('moverFotoProxima não é mais necessária');
+        }
+        
+        function atualizarFotoNoCard(fotoIdOriginal, novaFoto) {
+            // Esta função não é mais necessária com o novo sistema de carrossel
+            console.log('atualizarFotoNoCard não é mais necessária');
+        }
+        
+        // Modificar a função carregarFotos para implementar o carrossel
+        function carregarFotos() {
+            console.log('Função carregarFotos iniciada');
+            
+            // Limpa os containers
+            const gridContainer = document.getElementById('galeria-grid');
+            const semFotos = document.getElementById('sem-fotos');
+            
+            if (!gridContainer) {
+                console.error('Container da galeria não encontrado');
+                return;
+            }
+            
+            gridContainer.innerHTML = '';
+            
+            // Obtém os valores dos filtros
+            const anoSelecionado = filtroAnoGaleria ? filtroAnoGaleria.value : 'todos';
+            const mesSelecionado = filtroMesGaleria ? filtroMesGaleria.value : 'todos';
+            const termoBusca = buscaGaleria && buscaGaleria.value ? buscaGaleria.value.toLowerCase() : '';
+            
+            // Obtém o slug da ONG da URL
+            const params = new URLSearchParams(window.location.search);
+            const ongSlug = params.get('ong') || 'ampla'; // Fallback para 'ampla' se não especificado
+            
+            console.log('ONG:', ongSlug);
+            
+            if (!dadosONGs || !dadosONGs[ongSlug] || !dadosONGs[ongSlug].galeria) {
+                console.error('Dados não encontrados', {dadosONGs, ongSlug});
+                semFotos.style.display = 'block';
+                gridContainer.style.display = 'none';
+                return;
+            }
+            
+            // Filtra as fotos de acordo com os critérios
+            const fotosData = dadosONGs[ongSlug].galeria;
+            console.log('Fotos encontradas:', fotosData.length);
+            
+            const fotosFiltradas = fotosData.filter(foto => {
+                // Filtra por ano
+                if (anoSelecionado !== 'todos' && foto.ano !== anoSelecionado) {
+                    return false;
+                }
+                
+                // Filtra por mês
+                if (mesSelecionado !== 'todos' && foto.mes !== mesSelecionado) {
+                    return false;
+                }
+                
+                // Filtra por termo de busca
+                if (termoBusca && !(
+                    foto.titulo.toLowerCase().includes(termoBusca) ||
+                    foto.descricao.toLowerCase().includes(termoBusca) ||
+                    foto.evento.toLowerCase().includes(termoBusca)
+                )) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            console.log('Fotos filtradas:', fotosFiltradas.length);
+            
+            // Exibe mensagem se não houver fotos
+            if (fotosFiltradas.length === 0) {
+                semFotos.style.display = 'block';
+                gridContainer.style.display = 'none';
+                return;
+            }
+            
+            // Exibe as fotos filtradas
+            semFotos.style.display = 'none';
+            
+            // Criar o container do carrossel
+            gridContainer.className = 'row position-relative mb-4';
+            
+            // Determinar o número de fotos por página e o número de páginas
+            const fotosPorPagina = 4; // Exibe 4 fotos por vez
+            const numeroPaginas = Math.ceil(fotosFiltradas.length / fotosPorPagina);
+            let paginaAtual = 0; // Começa na primeira página
+            
+            // Criar paginador e controles de navegação
+            const carrosselContainer = document.createElement('div');
+            carrosselContainer.className = 'col-12 paginas-container';
+            carrosselContainer.style.position = 'relative';
+            
+            // Container para todas as páginas do carrossel
+            const paginasContainer = document.createElement('div');
+            paginasContainer.className = 'paginas-wrapper';
+            paginasContainer.style.display = 'flex';
+            paginasContainer.style.transition = 'transform 0.5s ease';
+            // Ajusta a largura total para garantir que cada página ocupe exatamente o espaço disponível
+            paginasContainer.style.width = `${numeroPaginas * 100}%`;
+            carrosselContainer.appendChild(paginasContainer);
+            
+            // Adicionar botões de navegação diretamente ao carrosselContainer
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'carrossel-control carrossel-prev';
+            prevBtn.innerHTML = '<i class="bi bi-chevron-left"></i>';
+            carrosselContainer.appendChild(prevBtn);
+            
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'carrossel-control carrossel-next';
+            nextBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
+            carrosselContainer.appendChild(nextBtn);
+            
+            // Criar e adicionar cada página do carrossel
+            for (let i = 0; i < numeroPaginas; i++) {
+                const pagina = document.createElement('div');
+                pagina.className = 'pagina';
+                
+                // Adicionar uma linha única para cada página que contenha todas as 4 fotos
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'row mx-0 w-100';
+                pagina.appendChild(rowDiv);
+                
+                // Definir largura exata para cada página
+                pagina.style.width = `${100 / numeroPaginas}%`;
+                pagina.style.flex = `0 0 ${100 / numeroPaginas}%`;
+                
+                // Obter as fotos para esta página
+                const fotosDaPagina = fotosFiltradas.slice(i * fotosPorPagina, (i + 1) * fotosPorPagina);
+                
+                // Adicionar as fotos a esta página em um grid equilibrado
+                // Calcular o tamanho das colunas com base na quantidade de fotos
+                const colSize = Math.floor(12 / Math.min(fotosDaPagina.length, 4));
+                
+                fotosDaPagina.forEach(foto => {
+                    const dataObj = new Date(foto.data);
+                    const dataFormatada = dataObj.toLocaleDateString('pt-BR');
+                    
+                    const fotoCard = document.createElement('div');
+                    fotoCard.className = `col-${colSize} px-2 mb-3`;
+                    fotoCard.innerHTML = `
+                        <div class="card h-100" data-foto-id="${foto.id}">
+                            <img src="${foto.imagem}" class="card-img-top" alt="${foto.titulo}" style="height: 180px; object-fit: cover;">
+                            <div class="card-body p-2">
+                                <h5 class="card-title">${foto.titulo}</h5>
+                                <p class="card-text">${foto.descricao}</p>
+                                <p class="card-text"><small class="text-muted">Data: ${dataFormatada}</small></p>
+                            </div>
+                            <div class="card-footer p-2">
+                                <button class="btn btn-primary btn-sm" onclick="abrirModalFoto(${foto.id})">
+                                    Ver ampliado
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    rowDiv.appendChild(fotoCard);
+                });
+                
+                paginasContainer.appendChild(pagina);
+            }
+            
+            gridContainer.appendChild(carrosselContainer);
+            
+            // Funções para navegação do carrossel
+            function atualizarPaginaAtual() {
+                paginasContainer.style.transform = `translateX(-${paginaAtual * (100 / numeroPaginas)}%)`;
+                
+                // Atualizar visibilidade dos botões de navegação
+                prevBtn.style.display = paginaAtual > 0 ? 'block' : 'none';
+                nextBtn.style.display = paginaAtual < numeroPaginas - 1 ? 'block' : 'none';
+                
+                // Adicionar indicação visual para depuração
+                console.log(`Página atual: ${paginaAtual + 1}/${numeroPaginas}`);
+                
+                // Adicionar uma indicação temporária de qual página está sendo mostrada
+                const paginaInfoDiv = document.createElement('div');
+                paginaInfoDiv.className = 'pagina-info';
+                paginaInfoDiv.textContent = `Página ${paginaAtual + 1} de ${numeroPaginas}`;
+                paginaInfoDiv.style.position = 'absolute';
+                paginaInfoDiv.style.bottom = '-30px';
+                paginaInfoDiv.style.left = '50%';
+                paginaInfoDiv.style.transform = 'translateX(-50%)';
+                paginaInfoDiv.style.textAlign = 'center';
+                paginaInfoDiv.style.fontSize = '0.9rem';
+                paginaInfoDiv.style.opacity = '0.8';
+                
+                // Remover indicador anterior se existir
+                const oldInfo = carrosselContainer.querySelector('.pagina-info');
+                if (oldInfo) {
+                    carrosselContainer.removeChild(oldInfo);
+                }
+                
+                carrosselContainer.appendChild(paginaInfoDiv);
+            }
+            
+            // Adicionar eventos aos botões de navegação
+            prevBtn.addEventListener('click', () => {
+                if (paginaAtual > 0) {
+                    paginaAtual--;
+                    atualizarPaginaAtual();
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (paginaAtual < numeroPaginas - 1) {
+                    paginaAtual++;
+                    atualizarPaginaAtual();
+                }
+            });
+            
+            // Inicializar o carrossel
+            atualizarPaginaAtual();
+        }
+        
+        // Função para recarregar os dados da imagem com o ID 6
+        function forcarAtualizacaoImagem() {
+            // Buscar a configuração da ONG da URL
+            const params = new URLSearchParams(window.location.search);
+            const ongSlug = params.get('ong') || 'ampla';
+            
+            if (!dadosONGs || !dadosONGs[ongSlug] || !dadosONGs[ongSlug].galeria) {
+                console.error('Dados não encontrados');
+                return;
+            }
+            
+            // Encontrar a foto com ID 6
+            const foto = dadosONGs[ongSlug].galeria.find(f => Number(f.id) === 6);
+            if (!foto) {
+                console.error('Foto com ID 6 não encontrada');
+                return;
+            }
+            
+            // Adicionar um parâmetro de timestamp à URL da imagem para evitar cache
+            const timestamp = new Date().getTime();
+            
+            // Verificar se a imagem já possui um parâmetro de consulta
+            if (foto.imagem.includes('?')) {
+                foto.imagem = foto.imagem.split('?')[0] + '?t=' + timestamp;
+            } else {
+                foto.imagem = foto.imagem + '?t=' + timestamp;
+            }
+            
+            console.log('URL da imagem atualizada:', foto.imagem);
+            
+            // Atualizar elementos DOM que exibem esta imagem
+            const cardElement = document.querySelector(`.foto-carrossel[data-foto-id="6"]`);
+            if (cardElement) {
+                const imgElement = cardElement.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = foto.imagem;
+                    console.log('Imagem atualizada no DOM');
+                }
+            }
+            
+            // Recarregar as fotos para garantir
+            carregarFotos();
+        }
+        
+        // Chamar a função após o carregamento inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            // Outras inicializações...
+            
+            // Executar após algum atraso para garantir que tudo seja carregado
+            setTimeout(() => {
+                forcarAtualizacaoImagem();
+            }, 1000);
+        });
+
+        // Criar botão para atualização manual da imagem
+        window.addEventListener('load', function() {
+            const gridContainer = document.getElementById('galeria-grid');
+            if (gridContainer) {
+                const botaoAtualizar = document.createElement('div');
+                botaoAtualizar.className = 'col-12 text-center mt-3 mb-3';
+                botaoAtualizar.innerHTML = `
+                    <button class="btn btn-primary" onclick="atualizarImagens()">
+                        <i class="bi bi-arrow-clockwise me-2"></i> Atualizar Imagens
+                    </button>
+                `;
+                gridContainer.parentNode.insertBefore(botaoAtualizar, gridContainer);
+            }
+        });
+        
+        // Função para atualizar todas as imagens (especialmente a ID 6)
+        function atualizarImagens() {
+            console.log('Atualizando imagens...');
+            
+            // Forçar recarregamento dos dados primeiro
+            fetch('js/dados.js?v=' + new Date().getTime())
+                .then(response => {
+                    console.log('Dados recarregados:', response.status);
+                    
+                    // Limpar cache no navegador para as imagens do Cloudinary
+                    const todasImagens = document.querySelectorAll('img');
+                    todasImagens.forEach(img => {
+                        const src = img.src;
+                        if (src.includes('cloudinary')) {
+                            const timestamp = new Date().getTime();
+                            if (src.includes('?')) {
+                                img.src = src.split('?')[0] + '?t=' + timestamp;
+                            } else {
+                                img.src = src + '?t=' + timestamp;
+                            }
+                            
+                            // Forçar o recarregamento da imagem
+                            img.setAttribute('loading', 'eager');
+                            img.onerror = function() {
+                                console.error('Erro ao carregar imagem:', src);
+                                this.src = 'https://via.placeholder.com/500x300?text=Erro+ao+carregar+imagem';
+                            };
+                            
+                            // Adicionar classe temporária para destacar atualização
+                            img.classList.add('img-atualizada');
+                            setTimeout(() => img.classList.remove('img-atualizada'), 2000);
+                            
+                            console.log('Imagem atualizada:', img.src);
+                        }
+                    });
+                    
+                    // Recarregar especificamente a imagem do ID 6
+                    const card6 = document.querySelector('.foto-carrossel[data-foto-id="6"]');
+                    if (card6) {
+                        const img6 = card6.querySelector('img');
+                        if (img6) {
+                            // Criar uma nova instância da imagem para recarregar
+                            const novaImg = new Image();
+                            novaImg.onload = function() {
+                                console.log('Nova imagem ID 6 carregada:', this.src);
+                                img6.src = this.src;
+                                img6.style.border = '3px solid green';
+                                setTimeout(() => img6.style.border = '', 3000);
+                            };
+                            novaImg.onerror = function() {
+                                console.error('Erro ao carregar nova imagem ID 6');
+                            };
+                            novaImg.src = 'https://res.cloudinary.com/dyxopkrxl/image/upload/v1743559847/CARNAVAL2_itwevb.png?t=' + new Date().getTime();
+                        }
+                    }
+                    
+                    // Forçar recarregamento dos dados e da galeria
+                    setTimeout(() => {
+                        carregarFotos();
+                        alert('Imagens atualizadas com sucesso!');
+                    }, 500);
+                })
+                .catch(error => {
+                    console.error('Erro ao atualizar dados:', error);
+                    alert('Ocorreu um erro ao atualizar as imagens. Tente novamente ou recarregue a página.');
+                });
+        }
+        
+        // Função para forçar o recarregamento da página sem cache
+        function recarregarSemCache() {
+            // Limpar manualmente o cache das imagens importantes
+            const listaImagens = [
+                'https://res.cloudinary.com/dyxopkrxl/image/upload/v1743559847/CARNAVAL2_itwevb.png',
+                'https://res.cloudinary.com/dyxopkrxl/image/upload/v1743559848/CARNAVAL1_ryjxue.png'
+            ];
+            
+            // Pré-carregar com novo parâmetro para forçar recarga
+            listaImagens.forEach(src => {
+                const img = new Image();
+                img.src = src + '?nocache=' + new Date().getTime();
+                console.log('Pré-carregando:', img.src);
+            });
+            
+            // Exibir mensagem ao usuário
+            alert('A página será recarregada para atualizar completamente. Por favor, aguarde...');
+            
+            // Recarregar a página forçando atualização do cache
+            const currentPath = window.location.href.split('?')[0];
+            window.location.href = currentPath + '?nocache=' + new Date().getTime();
+        }
+        
+        // Função para abrir o modal da foto quando clicar em "Ver ampliado"
+        function abrirModalFoto(fotoId) {
+            console.log('Abrindo modal para foto ID:', fotoId);
+            
+            // Obter os dados da ONG da URL
+            const params = new URLSearchParams(window.location.search);
+            const ongSlug = params.get('ong') || 'ampla';
+            
+            // Verificar se os dados existem
+            if (!dadosONGs || !dadosONGs[ongSlug] || !dadosONGs[ongSlug].galeria) {
+                console.error('Dados não encontrados');
+                return;
+            }
+            
+            // Encontrar a foto pelo ID
+            const foto = dadosONGs[ongSlug].galeria.find(f => Number(f.id) === Number(fotoId));
+            if (!foto) {
+                console.error('Foto não encontrada para o ID:', fotoId);
+                return;
+            }
+            
+            console.log('Foto encontrada:', foto);
+            
+            // Formatar a data
+            const dataObj = new Date(foto.data);
+            const dataFormatada = dataObj.toLocaleDateString('pt-BR');
+            
+            // Preencher os dados no modal
+            document.getElementById('fotoModalLabel').textContent = `Foto: ${foto.titulo}`;
+            document.getElementById('foto-ampliada').src = foto.imagem;
+            document.getElementById('foto-titulo').textContent = foto.titulo;
+            document.getElementById('foto-descricao').textContent = foto.descricao;
+            document.getElementById('foto-data').textContent = dataFormatada;
+            document.getElementById('foto-evento').textContent = foto.evento;
+            
+            // Abrir o modal
+            const modal = new bootstrap.Modal(document.getElementById('fotoModal'));
+            modal.show();
+        }
+
+        // Script dedicado para garantir que o filtro de livros funcione corretamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const resetFiltroBtn = document.getElementById('reset-filtro-livros');
+            if (resetFiltroBtn) {
+                resetFiltroBtn.addEventListener('click', function() {
+                    const filtroAnoLivros = document.getElementById('filtro-ano-livros');
+                    if (filtroAnoLivros) {
+                        filtroAnoLivros.value = 'todos';
+                        // Disparar o evento change manualmente
+                        const event = new Event('change');
+                        filtroAnoLivros.dispatchEvent(event);
+                    }
+                    
+                    const buscaLivros = document.getElementById('busca-livros');
+                    if (buscaLivros) {
+                        buscaLivros.value = '';
+                    }
+                });
+            }
+        });
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/dados.js"></script>
+    <script src="js/dados.js?v=202407312050"></script>
     <script src="js/ong.js"></script>
     <script src="js/theme.js"></script>
+    
+    <script>
+        window.addEventListener('load', function() {
+            // Adicionar botão de atualização forçada em um local discreto
+            const footer = document.querySelector('footer .container .row .col-md-6:last-child');
+            if (footer) {
+                const botaoLink = document.createElement('a');
+                botaoLink.href = '#';
+                botaoLink.className = 'text-muted ms-2 small';
+                botaoLink.style.fontSize = '0.8rem';
+                botaoLink.style.opacity = '0.6';
+                botaoLink.style.textDecoration = 'none';
+                botaoLink.onclick = function(e) {
+                    e.preventDefault();
+                    if (confirm('Deseja realmente recarregar a página para resolver problemas de cache?')) {
+                        recarregarSemCache();
+                    }
+                };
+                botaoLink.innerHTML = '<i class="bi bi-arrow-repeat"></i> Atualizar cache';
+                
+                // Adicionar ao footer após os outros links
+                footer.querySelector('.contatos-footer').appendChild(botaoLink);
+            }
+        });
+    </script>
+    
+    <!-- Script de depuração para o filtro de livros contábeis -->
+    <script>
+        window.addEventListener('load', function() {
+            console.log("=== Depuração do filtro de livros contábeis ===");
+            const filtroLivros = document.getElementById('filtro-ano-livros');
+            if (filtroLivros) {
+                console.log("Elemento select encontrado:", filtroLivros);
+                console.log("Valor selecionado:", filtroLivros.value);
+                console.log("Tipo do valor:", typeof filtroLivros.value);
+                
+                // Adicionar evento de change para debug
+                filtroLivros.addEventListener('change', function() {
+                    console.log("Evento change disparado");
+                    console.log("Novo valor:", this.value);
+                    console.log("Tipo do novo valor:", typeof this.value);
+                });
+                
+                // Testar manualmente o filtro
+                setTimeout(() => {
+                    console.log("Testando filtro para 2024:");
+                    // Selecionar 2024 manualmente
+                    filtroLivros.value = "2024";
+                    // Disparar evento manualmente
+                    const event = new Event('change');
+                    filtroLivros.dispatchEvent(event);
+                }, 2000);
+            } else {
+                console.error("Elemento select não encontrado!");
+            }
+        });
+    </script>
+    
+    <!-- Script para animação do menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Função para atualizar o menu com base no scroll
+            function atualizarMenuAtivo() {
+                const secoesMenu = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+                
+                // Obter a posição atual do scroll + um offset
+                const scrollPosition = window.scrollY + 200;
+                
+                // Para cada seção, verificar se está visível na tela
+                secoesMenu.forEach(secao => {
+                    const secaoTop = secao.offsetTop;
+                    const secaoHeight = secao.offsetHeight;
+                    const secaoId = secao.getAttribute('id');
+                    
+                    if (scrollPosition >= secaoTop && scrollPosition < secaoTop + secaoHeight) {
+                        // Remover classe 'active' de todos os links
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        
+                        // Adicionar classe 'active' ao link correspondente à seção atual
+                        const linkAtivo = document.querySelector(`.navbar-nav .nav-link[href="#${secaoId}"]`);
+                        if (linkAtivo) {
+                            linkAtivo.classList.add('active');
+                            
+                            // Efeito extra de destaque (opcional)
+                            linkAtivo.style.animation = 'none';
+                            setTimeout(() => {
+                                linkAtivo.style.animation = 'highlight 1.5s ease-in-out';
+                            }, 10);
+                        }
+                    }
+                });
+            }
+            
+            // Adicionar efeito de clique suave nos links do menu
+            document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Se o link aponta para uma âncora na mesma página
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        if (targetId !== '#') {
+                            const targetElement = document.querySelector(targetId);
+                            if (targetElement) {
+                                window.scrollTo({
+                                    top: targetElement.offsetTop - 80,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // Atualizar menu ao rolar a página
+            window.addEventListener('scroll', atualizarMenuAtivo);
+            
+            // Chamar uma vez para definir o estado inicial
+            atualizarMenuAtivo();
+        });
+    </script>
 </body>
 </html> 
