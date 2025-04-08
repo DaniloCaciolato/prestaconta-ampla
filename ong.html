@@ -250,7 +250,7 @@
         
         body.ong-ampla header,
         body.ong-ampla footer {
-            background: linear-gradient(135deg, #002B5C, #0047AB, #002B5C) !important;
+            background: linear-gradient(135deg, #0047AB, #0080ff, #0047AB) !important;
             background-size: 200% 200% !important;
             animation: gradientBG 15s ease infinite !important;
             color: white;
@@ -269,7 +269,7 @@
         }
         
         body.ong-ampla .navbar {
-            background: linear-gradient(90deg, #0047AB, #0080ff);
+            background: linear-gradient(90deg, #003380, #0047AB);
         }
         
         body.ong-ampla .titulo-degrade {
@@ -278,26 +278,10 @@
             font-size: 2.5rem;
             letter-spacing: -0.5px;
             background: linear-gradient(45deg, #0047AB, #0080ff, #0047AB);
-            background-size: 200% 200%;
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
             text-shadow: 2px 2px 4px rgba(0, 71, 171, 0.3);
-            animation: gradientBG 15s ease infinite;
-            position: relative;
-            display: inline-block;
-            padding: 0 10px;
-        }
-        
-        @keyframes gradientBG {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
         }
         
         body.ong-ampla .conta {
@@ -1019,7 +1003,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contato">Contato</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="bi bi-arrow-left"></i> Voltar</a>
+                    </li>
                 </ul>
             </div>
         </div>
