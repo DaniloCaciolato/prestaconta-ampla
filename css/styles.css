@@ -1,0 +1,453 @@
+/* Importação da fonte Ubuntu */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+
+/* Variáveis para o tema claro (padrão) */
+:root, .light-mode {
+    --font-family: 'Ubuntu', sans-serif;
+    
+    /* Cores de fundo - Astro.js */
+    --background: #ffffff;
+    --background-secondary: #f6f6f9;
+    --surface: #ffffff;
+    
+    /* Cores de texto - Astro.js */
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    
+    /* Cores de destaque - Astro.js */
+    --primary: #7e22ce;       /* Roxo (primário) */
+    --secondary: #4f46e5;     /* Índigo (secundário) */
+    --accent: #ff5e0e;        /* Laranja (destaque) */
+    
+    /* Cores funcionais */
+    --success: #10b981;       /* Verde (sucesso) */
+    --error: #ef4444;         /* Vermelho (erro) */
+    --warning: #f59e0b;       /* Amarelo (alerta) */
+    --info: #3b82f6;          /* Azul claro (informação) */
+
+    /* Bordas */
+    --border: #e2e8f0;
+    --shadow: rgba(0, 0, 0, 0.1);
+
+    /* Cores específicas */
+    --header-gradient-start: #777777;
+    --card-header-bg: var(--primary);
+    --table-primary-bg: rgba(126, 34, 206, 0.1);
+    --table-danger-bg: rgba(220, 53, 69, 0.1);
+}
+
+/* Variáveis para o tema escuro - Completamente refeito */
+.dark-mode {
+    /* Cores de fundo - Melhoradas para mais contraste */
+    --background: #121318;
+    --background-secondary: #1a1c25;
+    --surface: #23252f;
+    
+    /* Cores de texto - Ajustadas para melhor legibilidade */
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    
+    /* Cores de destaque - Mais vibrantes para o tema escuro */
+    --primary: #a855f7;       /* Roxo claro (primário) */
+    --secondary: #818cf8;     /* Índigo claro (secundário) */
+    --accent: #ff8a4c;        /* Laranja claro (destaque) */
+    
+    /* Cores funcionais - Mais saturadas para contraste */
+    --success: #4ade80;       /* Verde claro (sucesso) */
+    --error: #fb7185;         /* Vermelho claro (erro) */
+    --warning: #fbbf24;       /* Amarelo claro (alerta) */
+    --info: #38bdf8;          /* Azul claro (informação) */
+
+    /* Bordas e sombras - Escurecidas */
+    --border: #3f3f46;
+    --shadow: rgba(0, 0, 0, 0.5);
+
+    /* Cores específicas para o tema escuro */
+    --header-gradient-start: #222222;
+    --card-header-bg: #331e52; /* Roxo escuro */
+    --table-primary-bg: rgba(168, 85, 247, 0.15);
+    --table-danger-bg: rgba(248, 113, 113, 0.15);
+}
+
+/* Media query para preferências do sistema */
+@media (prefers-color-scheme: dark) {
+    body:not(.light-mode):not(.dark-mode) {
+        /* Aplicar as mesmas variáveis do tema escuro */
+        --background: #121318;
+        --background-secondary: #1a1c25;
+        --surface: #23252f;
+        
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        
+        --primary: #a855f7;
+        --secondary: #818cf8;
+        --accent: #ff8a4c;
+        
+        --success: #4ade80;
+        --error: #fb7185;
+        --warning: #fbbf24;
+        --info: #38bdf8;
+
+        --border: #3f3f46;
+        --shadow: rgba(0, 0, 0, 0.5);
+
+        --header-gradient-start: #222222;
+        --card-header-bg: #331e52;
+        --table-primary-bg: rgba(168, 85, 247, 0.15);
+        --table-danger-bg: rgba(248, 113, 113, 0.15);
+    }
+}
+
+/* Aplicação do tema */
+body {
+    font-family: var(--font-family);
+    background-color: var(--background);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Header */
+header {
+    background: linear-gradient(to right, var(--header-gradient-start), var(--primary));
+    color: #ffffff;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+header p, header .mb-0 {
+    color: #ffffff !important;
+}
+
+/* Navegação */
+.navbar {
+    padding: 0;
+    background-color: var(--background-secondary) !important;
+}
+
+.navbar .nav-link {
+    padding: 1rem;
+    transition: background-color 0.3s;
+    color: var(--text-primary) !important;
+}
+
+.navbar .nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: var(--accent) !important;
+}
+
+.navbar .nav-link.active {
+    color: var(--accent) !important;
+    font-weight: 500;
+}
+
+/* Cards */
+.card {
+    background-color: var(--surface);
+    border-color: var(--border);
+    box-shadow: 0 4px 6px var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 8px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px var(--shadow);
+}
+
+.card-header {
+    background-color: var(--card-header-bg) !important;
+    color: #ffffff !important;
+    border-radius: 8px 8px 0 0 !important;
+    border-color: var(--border);
+}
+
+.card-body {
+    color: var(--text-primary);
+}
+
+/* Seções */
+section {
+    scroll-margin-top: 80px;
+}
+
+h2 {
+    color: var(--primary);
+    font-weight: 500;
+    border-bottom-color: var(--border) !important;
+}
+
+.dark-mode section#receitas h2 {
+    color: var(--info);
+}
+
+.dark-mode section#despesas h2 {
+    color: var(--error);
+}
+
+/* Tabelas - Completamente refeitas */
+.table {
+    color: var(--text-primary);
+    border-color: var(--border);
+    background-color: var(--surface) !important;
+}
+
+.table th, .table td {
+    border-color: var(--border);
+}
+
+.table thead th {
+    font-weight: 500;
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--background-secondary);
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: var(--surface);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(126, 34, 206, 0.05);
+}
+
+.dark-mode .table-hover tbody tr:hover {
+    background-color: rgba(168, 85, 247, 0.1);
+}
+
+/* Cabeçalhos específicos para tabelas */
+.table-primary thead {
+    background-color: var(--table-primary-bg) !important;
+}
+
+.table-danger thead {
+    background-color: var(--table-danger-bg) !important;
+}
+
+.table-primary, 
+.table-primary > th, 
+.table-primary > td {
+    background-color: var(--table-primary-bg) !important;
+    color: var(--text-primary);
+}
+
+.table-danger, 
+.table-danger > th, 
+.table-danger > td {
+    background-color: var(--table-danger-bg) !important;
+    color: var(--text-primary);
+}
+
+/* Cores de texto */
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-danger, .text-error {
+    color: var(--error) !important;
+}
+
+.text-success {
+    color: var(--success) !important;
+}
+
+.text-muted {
+    color: var(--text-secondary) !important;
+}
+
+.dark-mode .text-muted {
+    color: var(--text-secondary) !important;
+    opacity: 0.85;
+}
+
+/* Formulários */
+.form-control, .form-select {
+    background-color: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(126, 34, 206, 0.25);
+}
+
+.dark-mode .form-control:focus, 
+.dark-mode .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(168, 85, 247, 0.25);
+}
+
+/* Botões */
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: #ffffff;
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+/* Links */
+a {
+    color: var(--primary);
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+/* Seletor de tema */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.theme-switch-icon {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+    color: #ffffff;
+}
+
+.dark-mode .theme-switch-icon {
+    transform: rotate(180deg);
+}
+
+/* Modal */
+.modal-content {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+.modal-header, .modal-footer {
+    border-color: var(--border);
+}
+
+/* Footer */
+footer {
+    background-color: var(--background-secondary) !important;
+    color: var(--text-primary) !important;
+    padding: 2rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+/* Status indicadores */
+.status-pendente {
+    color: var(--warning);
+}
+
+.status-concluido {
+    color: var(--success);
+}
+
+.status-em-progresso {
+    color: var(--primary);
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fadeIn {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Estilos para o logotipo */
+.logo-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.logo-text .presta {
+    color: #ffffff;
+}
+
+.logo-text .conta {
+    color: var(--accent);
+}
+
+/* Nome da ONG */
+#ong-nome, #footer-ong-nome {
+    color: var(--accent);
+}
+
+/* Contatos no footer */
+.contatos-footer a {
+    display: inline-block;
+    margin-left: 15px;
+    color: var(--text-primary);
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.contatos-footer a:hover {
+    color: var(--primary);
+    transform: scale(1.2);
+}
+
+.contatos-footer i {
+    font-size: 1.5rem;
+}
+
+/* Cards de organizações */
+.organizacao-card {
+    height: 100%;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.organizacao-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px var(--shadow);
+}
+
+.organizacao-card .card-title, 
+.organizacao-card .card-text, 
+.organizacao-card p {
+    color: var(--text-primary);
+}
+
+.dark-mode .organizacao-card span,
+.dark-mode .organizacao-card small {
+    color: var(--text-secondary);
+} 
