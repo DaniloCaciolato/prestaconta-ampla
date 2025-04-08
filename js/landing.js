@@ -49,6 +49,12 @@ function carregarOrganizacoes() {
     // Limpa o conteúdo atual
     listaOrganizacoes.innerHTML = '';
 
+        if (organizacoes.length === 1) {
+        const unicaOrg = organizacoes[0];
+        window.location.href = `ong.html?ong=${unicaOrg.slug}`;
+        return;
+    }
+
     // Verifica se existem organizações para exibir
     if (!organizacoes || organizacoes.length === 0) {
         listaOrganizacoes.innerHTML = '<div class="col-12"><div class="alert alert-info">Nenhuma organização disponível no momento.</div></div>';
