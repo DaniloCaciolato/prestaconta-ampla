@@ -16,10 +16,8 @@ function toggleTheme() {
         
         // Verifica qual ícone está ativo antes de tentar substituir
         if (themeIcon) {
-            if (themeIcon.classList.contains('bi-sun-fill')) {
-                themeIcon.classList.remove('bi-sun-fill');
-                themeIcon.classList.add('bi-moon-fill');
-            }
+            themeIcon.classList.remove('bi-sun-fill');
+            themeIcon.classList.add('bi-moon-fill');
         }
         
         // Atualiza o favicon para o tema claro
@@ -33,10 +31,8 @@ function toggleTheme() {
         
         // Verifica qual ícone está ativo antes de tentar substituir
         if (themeIcon) {
-            if (themeIcon.classList.contains('bi-moon-fill')) {
-                themeIcon.classList.remove('bi-moon-fill');
-                themeIcon.classList.add('bi-sun-fill');
-            }
+            themeIcon.classList.remove('bi-moon-fill');
+            themeIcon.classList.add('bi-sun-fill');
         }
         
         // Atualiza o favicon para o tema escuro

@@ -30,8 +30,8 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-            background-color: #8A2BE2 !important;
-            border-color: #8A2BE2 !important;
+            background: linear-gradient(45deg, #000000, #333333) !important;
+            border-color: #000000 !important;
             color: white !important;
         }
         
@@ -74,6 +74,30 @@
             animation: pulse 1s ease;
         }
         
+        /* Estilos específicos para tema claro */
+        body.light-mode {
+            background-color: #f8f9fa !important;
+            color: #212529 !important;
+        }
+        
+        body.light-mode header {
+            background: linear-gradient(45deg, #CC5500, #FF6B00) !important;
+        }
+        
+        body.light-mode .navbar {
+            background-color: #ffffff !important;
+        }
+        
+        body.light-mode .navbar .nav-link {
+            color: #212529 !important;
+        }
+        
+        body.light-mode .card {
+            background-color: #ffffff !important;
+            border-color: #dee2e6 !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+        }
+        
         /* Estilos específicos para tema escuro */
         body.dark-mode {
             background-color: #121318 !important;
@@ -81,7 +105,7 @@
         }
         
         body.dark-mode header {
-            background: linear-gradient(to right, #222222, #7e22ce) !important;
+            background: linear-gradient(45deg, #993D00, #CC5500) !important;
         }
         
         body.dark-mode .navbar {
@@ -99,7 +123,7 @@
         }
         
         body.dark-mode .card-header:not(.bg-primary):not(.text-white) {
-            background-color: #331e52 !important;
+            background-color: #1a1c25 !important;
             color: #f1f5f9 !important;
         }
         
@@ -226,12 +250,38 @@
         
         body.ong-ampla header,
         body.ong-ampla footer {
-            background-color: #0047AB;
+            background: linear-gradient(135deg, #0047AB, #0080ff, #0047AB) !important;
+            background-size: 200% 200% !important;
+            animation: gradientBG 15s ease infinite !important;
             color: white;
         }
         
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
         body.ong-ampla .navbar {
-            background-color: #003380;
+            background: linear-gradient(90deg, #003380, #0047AB);
+        }
+        
+        body.ong-ampla .titulo-degrade {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(45deg, #0047AB, #0080ff, #0047AB);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 71, 171, 0.3);
         }
         
         body.ong-ampla .conta {
@@ -549,6 +599,356 @@
         .carrossel-next {
             right: -5px; /* Move o botão mais para dentro */
         }
+        
+        /* Estilos específicos para o Instituto Futuro Melhor (verde e branco) */
+        body.ong-futuro {
+            background-color: #f0fff0;
+            font-family: 'Ubuntu', sans-serif;
+        }
+        
+        body.ong-futuro header,
+        body.ong-futuro footer {
+            background: linear-gradient(45deg, #CC5500, #FF6B00) !important;
+            color: white;
+        }
+        
+        body.ong-futuro .navbar {
+            background-color: #993D00;
+        }
+        
+        body.ong-futuro .conta {
+            color: #CC5500;
+        }
+        
+        body.ong-futuro #inicio h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #CC5500, #FF6B00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 2px 4px rgba(204, 85, 0, 0.2);
+            margin-bottom: 1rem;
+        }
+        
+        body.ong-futuro .titulo-moderno {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #CC5500, #FF6B00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            padding: 0 10px;
+        }
+        
+        body.ong-futuro .titulo-moderno::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            bottom: -10px;
+            left: 0;
+            background: linear-gradient(90deg, transparent, #CC5500, transparent);
+            border-radius: 50px;
+        }
+        
+        body.ong-futuro #ong-descricao,
+        body.ong-futuro .texto-moderno {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            letter-spacing: 0.2px;
+            color: #444;
+            text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+        
+        body.ong-futuro .card {
+            box-shadow: 0 3px 10px rgba(204, 85, 0, 0.1);
+            border-radius: 8px;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        body.ong-futuro .card:hover {
+            box-shadow: 0 5px 15px rgba(204, 85, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        body.ong-futuro .card-header {
+            background-color: #fff5f0;
+            border-top-left-radius: 8px !important;
+            border-top-right-radius: 8px !important;
+        }
+        
+        body.ong-futuro .btn-primary {
+            background-color: #CC5500;
+            border-color: #CC5500;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(204, 85, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        body.ong-futuro .btn-primary:hover {
+            background-color: #993D00;
+            border-color: #993D00;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(204, 85, 0, 0.4);
+        }
+        
+        body.ong-futuro .table-primary {
+            background-color: #fff5f0;
+        }
+        
+        body.ong-futuro .text-primary {
+            color: #CC5500 !important;
+        }
+        
+        body.ong-futuro .back-to-top {
+            background-color: #CC5500 !important;
+            border-color: #CC5500 !important;
+        }
+        
+        body.ong-futuro section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #CC5500;
+            letter-spacing: -0.5px;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        body.ong-futuro section h2:after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #CC5500, #FF6B00);
+            bottom: -1px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        /* Estilos específicos para a Associação Palmitalense de Basquete e Esportes (laranja e branco) */
+        body.ong-futuro {
+            background-color: #fff5f0;
+            font-family: 'Ubuntu', sans-serif;
+        }
+        
+        body.ong-futuro header,
+        body.ong-futuro footer {
+            background-color: #CC5500;
+            color: white;
+        }
+        
+        body.ong-futuro .navbar {
+            background-color: #993D00;
+        }
+        
+        body.ong-futuro .conta {
+            color: #CC5500;
+        }
+        
+        body.ong-futuro #inicio h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #CC5500, #FF6B00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 2px 4px rgba(204, 85, 0, 0.2);
+            margin-bottom: 1rem;
+        }
+        
+        body.ong-futuro .titulo-moderno {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #CC5500, #FF6B00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            padding: 0 10px;
+        }
+        
+        body.ong-futuro .titulo-moderno::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            bottom: -10px;
+            left: 0;
+            background: linear-gradient(90deg, transparent, #CC5500, transparent);
+            border-radius: 50px;
+        }
+        
+        body.ong-futuro #ong-descricao,
+        body.ong-futuro .texto-moderno {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            letter-spacing: 0.2px;
+            color: #444;
+            text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+        
+        body.ong-futuro .card {
+            box-shadow: 0 3px 10px rgba(204, 85, 0, 0.1);
+            border-radius: 8px;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        body.ong-futuro .card:hover {
+            box-shadow: 0 5px 15px rgba(204, 85, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        body.ong-futuro .card-header {
+            background-color: #fff5f0;
+            border-top-left-radius: 8px !important;
+            border-top-right-radius: 8px !important;
+        }
+        
+        body.ong-futuro .btn-primary {
+            background-color: #CC5500;
+            border-color: #CC5500;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(204, 85, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        body.ong-futuro .btn-primary:hover {
+            background-color: #993D00;
+            border-color: #993D00;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(204, 85, 0, 0.4);
+        }
+        
+        body.ong-futuro .table-primary {
+            background-color: #fff5f0;
+        }
+        
+        body.ong-futuro .text-primary {
+            color: #CC5500 !important;
+        }
+        
+        body.ong-futuro .back-to-top {
+            background-color: #CC5500 !important;
+            border-color: #CC5500 !important;
+        }
+        
+        body.ong-futuro section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #CC5500;
+            letter-spacing: -0.5px;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        body.ong-futuro section h2:after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #CC5500, #FF6B00);
+            bottom: -1px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        /* Estilos específicos para a Associação Palmitalense de Basquete e Esportes (laranja e preto) */
+        body.ong-futuro {
+            background-color: #f8f9fa;
+            font-family: 'Ubuntu', sans-serif;
+        }
+        
+        body.ong-futuro header,
+        body.ong-futuro footer {
+            background: linear-gradient(45deg, #CC5500, #FF6B00) !important;
+            color: white;
+        }
+        
+        body.ong-futuro .navbar {
+            background-color: #993D00;
+        }
+        
+        body.ong-futuro .conta {
+            color: #CC5500;
+        }
+        
+        body.ong-futuro #inicio h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #000000, #333333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+        
+        body.ong-futuro .titulo-moderno {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #000000, #333333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            padding: 0 10px;
+        }
+        
+        body.ong-futuro .titulo-moderno::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            bottom: -10px;
+            left: 0;
+            background: linear-gradient(90deg, transparent, #CC5500, transparent);
+            border-radius: 50px;
+        }
+        
+        body.ong-futuro .logo-text {
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.ong-futuro .presta {
+            color: white;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.ong-futuro .logo-img {
+            filter: brightness(0) invert(1);
+            transition: transform 0.3s ease;
+        }
+        
+        body.ong-futuro .logo-img:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -562,7 +962,7 @@
                 <div class="col-md-6 text-md-end d-flex justify-content-end align-items-center">
                     <p class="mb-0 me-3">Compromisso com a transparência e responsabilidade</p>
                     <div class="theme-switch-wrapper">
-                        <i class="bi bi-moon-fill theme-switch-icon"></i>
+                        <i class="bi bi-moon-stars theme-switch-icon"></i>
                     </div>
                 </div>
             </div>
@@ -613,16 +1013,13 @@
 
     <main class="container my-5">
         <section id="inicio" class="mb-5">
-            <div class="row align-items-center mb-4">
-                <div class="col-md-3 text-end">
-                    <img src="./img/logo-ampla.png" alt="Logo AMPLA" class="img-fluid" style="max-height: 180px;">
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-8 text-center">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <img src="./img/ampla-fundo.png" alt="Logo Associação de Assistência ao Menor de Platina" style="max-height: 180px; margin-right: 20px;">
+                        <h1 class="display-4 fw-bold mb-0 titulo-degrade">Associação de Assistência ao Menor de Platina</h1>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <h2 class="text-center">
-                        <span class="titulo-moderno" id="ong-nome-titulo"></span>
-                    </h2>
-                </div>
-                <div class="col-md-3"></div>
             </div>
             <div class="row">
                 <div class="col-md-8 mx-auto text-center">
@@ -639,7 +1036,7 @@
                         <!-- Destaque principal -->
                         <div class="col-md-12 mb-4">
                             <div class="card bg-light border-primary">
-                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(45deg, #000000, #333333) !important;">
                                     <h3 class="h5 mb-0">Edital Aberto: Matrículas 2025</h3>
                                     <span class="badge bg-warning">Destaque</span>
                                 </div>
@@ -665,7 +1062,7 @@
                         <!-- Avisos normais (linha com 2 colunas) -->
                         <div class="col-md-6 mb-4">
                             <div class="card h-100">
-                                <div class="card-header">
+                                <div class="card-header bg-dark text-white" style="background: linear-gradient(45deg, #000000, #333333) !important;">
                                     <h3 class="h5 mb-0">Resultado do Processo Seletivo</h3>
                                 </div>
                                 <div class="card-body">
@@ -680,7 +1077,7 @@
                         
                         <div class="col-md-6 mb-4">
                             <div class="card h-100">
-                                <div class="card-header">
+                                <div class="card-header bg-dark text-white" style="background: linear-gradient(45deg, #000000, #333333) !important;">
                                     <h3 class="h5 mb-0">Campanha de Doação de Materiais</h3>
                                 </div>
                                 <div class="card-body">
@@ -749,7 +1146,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Os dados serão inseridos via JavaScript -->
+                                <tr>
+                                    <td colspan="4" class="text-center py-5">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <i class="bi bi-hourglass-split display-4 text-primary mb-3"></i>
+                                            <h4 class="mb-2">Em breve</h4>
+                                            <p class="text-muted">As receitas serão exibidas aqui em breve.</p>
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                             <tfoot>
                                 <tr class="fw-bold">
@@ -1001,7 +1406,7 @@
                     <div class="row mb-4">
                         <div class="col-md-12">
                             <div class="card h-100">
-                                <div class="card-header bg-primary text-white">
+                                <div class="card-header bg-dark text-white" style="background: linear-gradient(45deg, #000000, #333333) !important;">
                                     <h3 class="card-title h5 mb-0">Diretoria Executiva</h3>
                                 </div>
                                 <div class="card-body">
@@ -1051,7 +1456,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-4 mb-md-0">
                             <div class="card h-100">
-                                <div class="card-header bg-primary text-white">
+                                <div class="card-header bg-dark text-white" style="background: linear-gradient(45deg, #000000, #333333) !important;">
                                     <h3 class="card-title h5 mb-0">Conselho Fiscal</h3>
                                 </div>
                                 <div class="card-body">
@@ -1081,7 +1486,7 @@
                         
                         <div class="col-md-6">
                             <div class="card h-100">
-                                <div class="card-header bg-primary text-white">
+                                <div class="card-header bg-dark text-white" style="background: linear-gradient(45deg, #000000, #333333) !important;">
                                     <h3 class="card-title h5 mb-0">Suplentes do Conselho Fiscal</h3>
                                 </div>
                                 <div class="card-body">
@@ -1213,18 +1618,31 @@
         <i class="bi bi-arrow-up"></i>
     </a>
 
+    <!-- Animação da Bola de Basquete -->
+    <div class="basketball-animation" id="basketball-top">
+        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="18" fill="#CC5500"/>
+            <path d="M20 2C10.06 2 2 10.06 2 20s8.06 18 18 18 18-8.06 18-18S29.94 2 20 2zm0 34c-8.84 0-16-7.16-16-16S11.16 4 20 4s16 7.16 16 16-7.16 16-16 16z" fill="#993D00"/>
+            <path d="M20 2c-9.94 0-18 8.06-18 18s8.06 18 18 18 18-8.06 18-18-8.06-18-18-18zm0 34c-8.84 0-16-7.16-16-16S11.16 4 20 4s16 7.16 16 16-7.16 16-16 16z" fill="#FF6B00"/>
+            <path d="M20 2c-9.94 0-18 8.06-18 18s8.06 18 18 18 18-8.06 18-18-8.06-18-18-18zm0 34c-8.84 0-16-7.16-16-16S11.16 4 20 4s16 7.16 16 16-7.16 16-16 16z" fill="#CC5500"/>
+            <path d="M20 2c-9.94 0-18 8.06-18 18s8.06 18 18 18 18-8.06 18-18-8.06-18-18-18zm0 34c-8.84 0-16-7.16-16-16S11.16 4 20 4s16 7.16 16 16-7.16 16-16 16z" fill="#993D00"/>
+        </svg>
+    </div>
+
     <script>
         // Script para o botão de voltar ao topo
         document.addEventListener('DOMContentLoaded', function() {
-            const backToTopButton = document.getElementById('back-to-top');
+            const backToTop = document.getElementById('back-to-top');
             
             // Função para verificar a posição da rolagem
             function checkScroll() {
                 // Mostra o botão depois de rolar 300px
                 if (window.scrollY > 300) {
-                    backToTopButton.classList.add('show');
+                    backToTop.style.display = 'block';
+                    backToTop.classList.add('show');
                 } else {
-                    backToTopButton.classList.remove('show');
+                    backToTop.style.display = 'none';
+                    backToTop.classList.remove('show');
                 }
             }
             
@@ -1235,7 +1653,7 @@
             window.addEventListener('scroll', checkScroll);
             
             // Volta para o topo quando o botão é clicado
-            backToTopButton.addEventListener('click', function(e) {
+            backToTop.addEventListener('click', function(e) {
                 e.preventDefault();
                 window.scrollTo({
                     top: 0,
@@ -1724,8 +2142,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/dados.js?v=202407312050"></script>
-    <script src="js/ong.js"></script>
-    <script src="js/theme.js"></script>
+    <script src="js/ong.js?v=202407312050"></script>
+    <script src="js/theme.js?v=202407312050"></script>
     
     <script>
         window.addEventListener('load', function() {

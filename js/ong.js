@@ -33,6 +33,17 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
+    // Verificar se o domínio atual corresponde à ONG solicitada
+    const hostname = window.location.hostname;
+    const dominioPermitido = verificarDominioPermitido(hostname, orgSlug);
+    
+    if (!dominioPermitido) {
+        console.log("Acesso negado: domínio não autorizado para esta ONG");
+        // Redirecionar para a página inicial se o domínio não for autorizado
+        window.location.href = 'index.html';
+        return;
+    }
+    
     // Carregar dados da ONG
     dadosOng = organizacoes.find(org => org.slug === orgSlug);
     dadosReceitas = dadosONGs[orgSlug].receitas;
@@ -46,11 +57,47 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
+ * Verifica se o domínio atual tem permissão para acessar os dados da ONG
+ * @param {string} hostname - O hostname atual
+ * @param {string} ongSlug - O slug da ONG solicitada
+ * @returns {boolean} - True se o domínio tem permissão, false caso contrário
+ */
+function verificarDominioPermitido(hostname, ongSlug) {
+    // Se estiver em localhost ou IP, permitir acesso (para desenvolvimento)
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.includes('::1')) {
+        return true;
+    }
+    
+    // Verificar se o domínio corresponde à ONG
+    if (ongSlug === 'ampla' && hostname.includes('ampla.')) {
+        return true;
+    }
+    
+    if (ongSlug === 'basquete' && (
+        hostname.includes('basquete.') || 
+        hostname.includes('epbe.') || 
+        hostname.includes('palmitalense.')
+    )) {
+        return true;
+    }
+    
+    // Se não houver correspondência, negar acesso
+    return false;
+}
+
+/**
  * Inicializa todas as funcionalidades do portal
  */
 function inicializarPortal() {
     // Adicionar classe específica da ONG ao body
-    const ongSlug = new URLSearchParams(window.location.search).get('ong') || 'ampla';
+    const urlParams = new URLSearchParams(window.location.search);
+    const pathSlug = window.location.pathname.split('/').pop().replace('.html', '');
+    const ongSlug = urlParams.get('ong') || pathSlug || 'ampla';
+    
+    // Remover classes existentes de ONG
+    document.body.classList.remove('ong-ampla', 'ong-futuro');
+    
+    // Adicionar nova classe
     document.body.classList.add(`ong-${ongSlug}`);
     console.log('Classe adicionada ao body:', `ong-${ongSlug}`);
     
@@ -61,6 +108,7 @@ function inicializarPortal() {
     carregarReceitas();
     carregarDespesas();
     carregarLivrosContabeis();
+    carregarMuralAvisos();
     atualizarResumoFinanceiro();
     
     // Configurar eventos
@@ -78,6 +126,19 @@ function inicializarPortal() {
  * Carrega as informações da ONG na página
  */
 function carregarInformacoesONG() {
+    // Verificar se o domínio atual corresponde à ONG solicitada
+    const hostname = window.location.hostname;
+    const urlParams = new URLSearchParams(window.location.search);
+    const ongSlug = urlParams.get('ong') || 'ampla';
+    const dominioPermitido = verificarDominioPermitido(hostname, ongSlug);
+    
+    if (!dominioPermitido) {
+        console.log("Acesso negado: domínio não autorizado para esta ONG");
+        // Redirecionar para a página inicial se o domínio não for autorizado
+        window.location.href = 'index.html';
+        return;
+    }
+    
     // Nome da ONG
     document.getElementById('ong-nome').textContent = dadosOng.nome;
     document.getElementById('footer-ong-nome').textContent = dadosOng.nome;
@@ -152,129 +213,204 @@ function formatarData(dataISO) {
 }
 
 /**
- * Carrega a tabela de receitas
+ * Carrega as receitas da ONG
  */
 function carregarReceitas(filtroAno = 'todos', filtroMes = 'todos', termoBusca = '') {
-    const tbody = document.querySelector('#tabela-receitas tbody');
-    tbody.innerHTML = '';
+    // Verificar se o domínio atual corresponde à ONG solicitada
+    const hostname = window.location.hostname;
+    const urlParams = new URLSearchParams(window.location.search);
+    const ongSlug = urlParams.get('ong') || 'ampla';
+    const dominioPermitido = verificarDominioPermitido(hostname, ongSlug);
     
-    let dadosFiltrados = dadosReceitas;
-    
-    // Aplicar filtro de ano
-    if (filtroAno !== 'todos') {
-        dadosFiltrados = dadosFiltrados.filter(receita => receita.ano === filtroAno);
+    if (!dominioPermitido) {
+        console.log("Acesso negado: domínio não autorizado para esta ONG");
+        return;
     }
     
-    // Aplicar filtro de mês
+    const tabelaReceitas = document.getElementById('tabela-receitas');
+    const semReceitas = document.getElementById('sem-receitas');
+    
+    if (!tabelaReceitas) {
+        console.error('Tabela de receitas não encontrada');
+        return;
+    }
+    
+    // Limpar a tabela
+    tabelaReceitas.innerHTML = '';
+    
+    // Verificar se existem receitas
+    if (!dadosReceitas || dadosReceitas.length === 0) {
+        tabelaReceitas.style.display = 'none';
+        semReceitas.style.display = 'block';
+        semReceitas.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <div class="d-flex flex-column align-items-center">
+                    <i class="bi bi-hourglass-split display-4 text-primary mb-3"></i>
+                    <h4 class="mb-2">Em breve</h4>
+                    <p class="text-muted">As receitas serão exibidas aqui em breve.</p>
+                </div>
+            </div>
+        `;
+        document.getElementById('total-receitas').textContent = 'R$ 0,00';
+        return;
+    }
+    
+    // Aplicar filtros
+    let receitasFiltradas = dadosReceitas;
+    
+    if (filtroAno !== 'todos') {
+        receitasFiltradas = receitasFiltradas.filter(receita => receita.ano === filtroAno);
+    }
+    
     if (filtroMes !== 'todos') {
-        dadosFiltrados = dadosFiltrados.filter(receita => {
-            const mes = receita.data.split('-')[1]; // Formato esperado: YYYY-MM-DD
-            return mes === filtroMes;
+        receitasFiltradas = receitasFiltradas.filter(receita => {
+            const data = new Date(receita.data);
+            return (data.getMonth() + 1).toString() === filtroMes;
         });
     }
     
-    // Aplicar busca
     if (termoBusca) {
-        const termoLowerCase = termoBusca.toLowerCase();
-        dadosFiltrados = dadosFiltrados.filter(receita => 
-            receita.descricao.toLowerCase().includes(termoLowerCase) || 
-            receita.fonte.toLowerCase().includes(termoLowerCase)
+        const termo = termoBusca.toLowerCase();
+        receitasFiltradas = receitasFiltradas.filter(receita => 
+            receita.descricao.toLowerCase().includes(termo) || 
+            receita.fonte.toLowerCase().includes(termo)
         );
     }
     
-    // Ordenar por data (mais recente primeiro)
-    dadosFiltrados.sort((a, b) => new Date(b.data) - new Date(a.data));
+    // Exibir ou ocultar a mensagem de "sem receitas"
+    if (receitasFiltradas.length === 0) {
+        tabelaReceitas.style.display = 'none';
+        semReceitas.style.display = 'block';
+        semReceitas.innerHTML = '<div class="col-12 text-center">Nenhuma receita encontrada</div>';
+        document.getElementById('total-receitas').textContent = 'R$ 0,00';
+        return;
+    } else {
+        tabelaReceitas.style.display = 'table';
+        semReceitas.style.display = 'none';
+    }
     
-    // Calcular valor total
-    let valorTotal = 0;
+    // Calcular o total de receitas
+    const totalReceitas = receitasFiltradas.reduce((total, receita) => total + parseFloat(receita.valor), 0);
+    document.getElementById('total-receitas').textContent = `R$ ${totalReceitas.toFixed(2).replace('.', ',')}`;
     
-    // Adicionar linhas à tabela
-    dadosFiltrados.forEach(receita => {
-        valorTotal += receita.valor;
+    // Renderizar as receitas
+    receitasFiltradas.forEach(receita => {
+        const data = new Date(receita.data);
+        const dataFormatada = data.toLocaleDateString('pt-BR');
         
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${formatarData(receita.data)}</td>
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${dataFormatada}</td>
             <td>${receita.descricao}</td>
             <td>${receita.fonte}</td>
-            <td class="text-end">${formatarMoeda(receita.valor)}</td>
+            <td class="text-end">R$ ${parseFloat(receita.valor).toFixed(2).replace('.', ',')}</td>
         `;
-        tbody.appendChild(tr);
+        
+        tabelaReceitas.appendChild(row);
     });
-    
-    // Atualizar rodapé com total
-    document.getElementById('soma-receitas').textContent = formatarMoeda(valorTotal);
-    
-    // Caso não haja dados
-    if (dadosFiltrados.length === 0) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = '<td colspan="4" class="text-center">Nenhuma receita encontrada</td>';
-        tbody.appendChild(tr);
-    }
 }
 
 /**
- * Carrega a tabela de despesas
+ * Carrega as despesas da ONG
  */
 function carregarDespesas(filtroAno = 'todos', filtroMes = 'todos', termoBusca = '') {
-    const tbody = document.querySelector('#tabela-despesas tbody');
-    tbody.innerHTML = '';
+    // Verificar se o domínio atual corresponde à ONG solicitada
+    const hostname = window.location.hostname;
+    const urlParams = new URLSearchParams(window.location.search);
+    const ongSlug = urlParams.get('ong') || 'ampla';
+    const dominioPermitido = verificarDominioPermitido(hostname, ongSlug);
     
-    let dadosFiltrados = dadosDespesas;
-    
-    // Aplicar filtro de ano
-    if (filtroAno !== 'todos') {
-        dadosFiltrados = dadosFiltrados.filter(despesa => despesa.ano === filtroAno);
+    if (!dominioPermitido) {
+        console.log("Acesso negado: domínio não autorizado para esta ONG");
+        return;
     }
     
-    // Aplicar filtro de mês
+    const tabelaDespesas = document.getElementById('tabela-despesas');
+    const semDespesas = document.getElementById('sem-despesas');
+    
+    if (!tabelaDespesas) {
+        console.error('Tabela de despesas não encontrada');
+        return;
+    }
+    
+    // Limpar a tabela
+    tabelaDespesas.innerHTML = '';
+    
+    // Verificar se existem despesas
+    if (!dadosDespesas || dadosDespesas.length === 0) {
+        tabelaDespesas.style.display = 'none';
+        semDespesas.style.display = 'block';
+        semDespesas.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <div class="d-flex flex-column align-items-center">
+                    <i class="bi bi-hourglass-split display-4 text-primary mb-3"></i>
+                    <h4 class="mb-2">Em breve</h4>
+                    <p class="text-muted">As despesas serão exibidas aqui em breve.</p>
+                </div>
+            </div>
+        `;
+        document.getElementById('total-despesas').textContent = 'R$ 0,00';
+        return;
+    }
+    
+    // Aplicar filtros
+    let despesasFiltradas = dadosDespesas;
+    
+    if (filtroAno !== 'todos') {
+        despesasFiltradas = despesasFiltradas.filter(despesa => despesa.ano === filtroAno);
+    }
+    
     if (filtroMes !== 'todos') {
-        dadosFiltrados = dadosFiltrados.filter(despesa => {
-            const mes = despesa.data.split('-')[1]; // Formato esperado: YYYY-MM-DD
-            return mes === filtroMes;
+        despesasFiltradas = despesasFiltradas.filter(despesa => {
+            const data = new Date(despesa.data);
+            return (data.getMonth() + 1).toString() === filtroMes;
         });
     }
     
-    // Aplicar busca
     if (termoBusca) {
-        const termoLowerCase = termoBusca.toLowerCase();
-        dadosFiltrados = dadosFiltrados.filter(despesa => 
-            despesa.descricao.toLowerCase().includes(termoLowerCase) || 
-            despesa.categoria.toLowerCase().includes(termoLowerCase) ||
-            despesa.projeto.toLowerCase().includes(termoLowerCase)
+        const termo = termoBusca.toLowerCase();
+        despesasFiltradas = despesasFiltradas.filter(despesa => 
+            despesa.descricao.toLowerCase().includes(termo) || 
+            despesa.categoria.toLowerCase().includes(termo) ||
+            despesa.projeto.toLowerCase().includes(termo)
         );
     }
     
-    // Ordenar por data (mais recente primeiro)
-    dadosFiltrados.sort((a, b) => new Date(b.data) - new Date(a.data));
+    // Exibir ou ocultar a mensagem de "sem despesas"
+    if (despesasFiltradas.length === 0) {
+        tabelaDespesas.style.display = 'none';
+        semDespesas.style.display = 'block';
+        semDespesas.innerHTML = '<div class="col-12 text-center">Nenhuma despesa encontrada</div>';
+        document.getElementById('total-despesas').textContent = 'R$ 0,00';
+        return;
+    } else {
+        tabelaDespesas.style.display = 'table';
+        semDespesas.style.display = 'none';
+    }
     
-    // Calcular valor total
-    let valorTotal = 0;
+    // Calcular o total de despesas
+    const totalDespesas = despesasFiltradas.reduce((total, despesa) => total + parseFloat(despesa.valor), 0);
+    document.getElementById('total-despesas').textContent = `R$ ${totalDespesas.toFixed(2).replace('.', ',')}`;
     
-    // Adicionar linhas à tabela
-    dadosFiltrados.forEach(despesa => {
-        valorTotal += despesa.valor;
+    // Renderizar as despesas
+    despesasFiltradas.forEach(despesa => {
+        const data = new Date(despesa.data);
+        const dataFormatada = data.toLocaleDateString('pt-BR');
         
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${formatarData(despesa.data)}</td>
-            <td><a href="#" class="despesa-link" data-id="${despesa.id}">${despesa.descricao}</a></td>
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${dataFormatada}</td>
+            <td>${despesa.descricao}</td>
             <td>${despesa.categoria}</td>
             <td>${despesa.projeto}</td>
-            <td class="text-end">${formatarMoeda(despesa.valor)}</td>
+            <td class="text-end">R$ ${parseFloat(despesa.valor).toFixed(2).replace('.', ',')}</td>
+            <td class="text-center">
+                ${despesa.imagem ? `<button class="btn btn-sm btn-outline-primary" onclick="abrirModalDespesa(${despesa.id})"><i class="bi bi-image"></i></button>` : '-'}
+            </td>
         `;
-        tbody.appendChild(tr);
+        
+        tabelaDespesas.appendChild(row);
     });
-    
-    // Atualizar rodapé com total
-    document.getElementById('soma-despesas').textContent = formatarMoeda(valorTotal);
-    
-    // Caso não haja dados
-    if (dadosFiltrados.length === 0) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = '<td colspan="5" class="text-center">Nenhuma despesa encontrada</td>';
-        tbody.appendChild(tr);
-    }
 }
 
 /**
@@ -437,10 +573,21 @@ function configurarModais() {
 }
 
 /**
- * Carrega os livros contábeis
+ * Carrega os livros contábeis da ONG
  */
 function carregarLivrosContabeis(filtroAno = 'todos', termoBusca = '') {
-    const containerLivros = document.getElementById('livros-contabeis');
+    // Verificar se o domínio atual corresponde à ONG solicitada
+    const hostname = window.location.hostname;
+    const urlParams = new URLSearchParams(window.location.search);
+    const ongSlug = urlParams.get('ong') || 'ampla';
+    const dominioPermitido = verificarDominioPermitido(hostname, ongSlug);
+    
+    if (!dominioPermitido) {
+        console.log("Acesso negado: domínio não autorizado para esta ONG");
+        return;
+    }
+    
+    const containerLivros = document.getElementById('container-livros');
     const semLivros = document.getElementById('sem-livros');
     
     if (!containerLivros) {
@@ -451,31 +598,34 @@ function carregarLivrosContabeis(filtroAno = 'todos', termoBusca = '') {
     // Limpar o container
     containerLivros.innerHTML = '';
     
-    console.log('Filtro de ano aplicado:', filtroAno, 'Tipo:', typeof filtroAno);
-    
-    // Dados de exemplo para os livros contábeis - Recriando os dados em cada chamada
-    const livros = gerarLivrosContabeis();
+    // Verificar se existem livros
+    if (!dadosOng.livrosContabeis || dadosOng.livrosContabeis.length === 0) {
+        containerLivros.style.display = 'none';
+        semLivros.style.display = 'block';
+        semLivros.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <div class="d-flex flex-column align-items-center">
+                    <i class="bi bi-hourglass-split display-4 text-primary mb-3"></i>
+                    <h4 class="mb-2">Em breve</h4>
+                    <p class="text-muted">Os livros contábeis serão exibidos aqui em breve.</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
     
     // Aplicar filtros
-    let livrosFiltrados = livros;
+    let livrosFiltrados = dadosOng.livrosContabeis;
     
     if (filtroAno !== 'todos') {
-        // Garantir que a comparação seja feita entre strings
-        const filtroAnoString = String(filtroAno);
-        console.log('Filtrando por ano:', filtroAnoString, 'Tipo:', typeof filtroAnoString);
-        
-        livrosFiltrados = livrosFiltrados.filter(livro => {
-            console.log('Comparando:', livro.ano, typeof livro.ano, 'com', filtroAnoString, 'Resultado:', livro.ano === filtroAnoString);
-            return livro.ano === filtroAnoString;
-        });
-        
-        console.log('Livros filtrados por ano:', livrosFiltrados.length, 'Usando filtro:', filtroAnoString);
+        livrosFiltrados = livrosFiltrados.filter(livro => livro.ano === filtroAno);
     }
     
     if (termoBusca) {
         const termo = termoBusca.toLowerCase();
         livrosFiltrados = livrosFiltrados.filter(livro => 
-            livro.tipo.toLowerCase().includes(termo)
+            livro.tipo.toLowerCase().includes(termo) || 
+            livro.ano.toString().includes(termo)
         );
     }
     
@@ -483,30 +633,28 @@ function carregarLivrosContabeis(filtroAno = 'todos', termoBusca = '') {
     if (livrosFiltrados.length === 0) {
         containerLivros.style.display = 'none';
         semLivros.style.display = 'block';
+        semLivros.innerHTML = '<div class="col-12 text-center">Nenhum livro contábil encontrado</div>';
         return;
     } else {
-        containerLivros.style.display = 'flex';
+        containerLivros.style.display = 'grid';
         semLivros.style.display = 'none';
     }
     
     // Renderizar os livros
     livrosFiltrados.forEach(livro => {
         const card = document.createElement('div');
-        card.className = 'col';
+        card.className = 'col-md-4 mb-4';
         card.innerHTML = `
             <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="bi ${livro.icone} display-1 ${livro.cor} mb-3"></i>
-                    <h5 class="card-title">${livro.tipo}</h5>
-                    <p class="card-text"><small class="text-muted">Ano: ${livro.ano}</small></p>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="${livro.arquivo}" class="btn btn-primary btn-sm" target="_blank">
-                        <i class="bi bi-download"></i> Download
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi ${livro.icone} fs-4 me-2" style="color: ${livro.cor}"></i>
+                        <h5 class="card-title mb-0">${livro.tipo}</h5>
+                    </div>
+                    <p class="card-text">Ano: ${livro.ano}</p>
+                    <a href="${livro.arquivo}" class="btn btn-primary" target="_blank">
+                        <i class="bi bi-download me-2"></i>Baixar
                     </a>
-                    <button class="btn btn-secondary btn-sm" onclick="visualizarDocumento(${livro.id})">
-                        <i class="bi bi-eye"></i> Visualizar
-                    </button>
                 </div>
             </div>
         `;
@@ -516,62 +664,75 @@ function carregarLivrosContabeis(filtroAno = 'todos', termoBusca = '') {
 }
 
 /**
- * Gera os dados para os livros contábeis
+ * Carrega os avisos do mural
  */
-function gerarLivrosContabeis() {
-    return [
-        {
-            id: 1,
-            tipo: 'Balanço Patrimonial',
-            ano: '2024',
-            arquivo: '#',
-            icone: 'bi-file-earmark-text',
-            cor: 'text-primary'
-        },
-        {
-            id: 2,
-            tipo: 'Balancete',
-            ano: '2024',
-            arquivo: '#',
-            icone: 'bi-file-earmark-ruled',
-            cor: 'text-success'
-        },
-        {
-            id: 3,
-            tipo: 'Demonstração do Resultado',
-            ano: '2024',
-            arquivo: '#',
-            icone: 'bi-file-earmark-bar-graph',
-            cor: 'text-danger'
-        },
-        {
-            id: 4,
-            tipo: 'Notas Explicativas',
-            ano: '2024',
-            arquivo: '#',
-            icone: 'bi-file-earmark-text',
-            cor: 'text-info'
-        },
-        {
-            id: 5,
-            tipo: 'Balanço Patrimonial',
-            ano: '2025',
-            arquivo: '#',
-            icone: 'bi-file-earmark-text',
-            cor: 'text-primary'
-        },
-        {
-            id: 6,
-            tipo: 'Balancete',
-            ano: '2025',
-            arquivo: '#',
-            icone: 'bi-file-earmark-ruled',
-            cor: 'text-success'
+function carregarMuralAvisos() {
+    // Obter o slug da ONG atual
+    const urlParams = new URLSearchParams(window.location.search);
+    const pathSlug = window.location.pathname.split('/').pop().replace('.html', '');
+    const ongSlug = urlParams.get('ong') || pathSlug || 'ampla';
+    
+    // Obter os avisos do mural da ONG atual
+    const avisos = dadosONGs[ongSlug]?.muralAvisos || [];
+    
+    // Verificar se existem avisos
+    if (!avisos || avisos.length === 0) {
+        const muralSection = document.getElementById('mural');
+        if (muralSection) {
+            muralSection.innerHTML = `
+                <h2 class="border-bottom pb-2 mb-4">Mural de Avisos</h2>
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="bi bi-hourglass-split display-4 text-primary mb-3"></i>
+                            <h4 class="mb-2">Em breve</h4>
+                            <p class="text-muted">Os avisos serão exibidos aqui em breve.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
-    ];
-}
-
-// Visualizar documento
-function visualizarDocumento(livroId) {
-    alert(`Visualização do documento ID ${livroId} em desenvolvimento.`);
+        return;
+    }
+    
+    // Renderizar os avisos
+    const muralSection = document.getElementById('mural');
+    if (muralSection) {
+        let html = `
+            <h2 class="border-bottom pb-2 mb-4">Mural de Avisos</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-4">
+        `;
+        
+        // Adicionar cada aviso
+        avisos.forEach(aviso => {
+            html += `
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-dark text-white" style="background: linear-gradient(45deg, #000000, #333333) !important;">
+                            <h3 class="h5 mb-0">${aviso.titulo}</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">${aviso.descricao}</p>
+                            <a href="${aviso.arquivo}" class="btn btn-primary btn-sm" target="_blank">
+                                <i class="bi bi-file-earmark-pdf"></i> Ver PDF
+                            </a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            Publicado em: ${formatarData(aviso.data)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += `
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        muralSection.innerHTML = html;
+    }
 } 

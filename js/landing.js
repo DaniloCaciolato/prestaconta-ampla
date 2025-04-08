@@ -18,9 +18,23 @@ function verificarUrlAmigavel() {
     // Obter o caminho da URL atual
     const path = window.location.pathname;
     const urlAtual = window.location.href;
+    const hostname = window.location.hostname;
     
     // Não fazer nada se já estivermos em uma página conhecida
     if (path.includes('index.html') || path.includes('ong.html')) {
+        return;
+    }
+    
+    // Verificar subdomínios
+    if (hostname.includes('ampla.')) {
+        window.location.href = 'ong.html?ong=ampla';
+        return;
+    }
+    
+    if (hostname.includes('basquete.') || 
+        hostname.includes('epbe.') || 
+        hostname.includes('palmitalense.')) {
+        window.location.href = 'ong.html?ong=basquete';
         return;
     }
     
@@ -43,6 +57,7 @@ function verificarUrlAmigavel() {
  */
 function carregarOrganizacoes() {
     const listaOrganizacoes = document.getElementById('lista-organizacoes');
+    const botaoVoltar = document.querySelector('.nav-link[href="index.html"]');
 
     if (!listaOrganizacoes) return;
 
@@ -53,6 +68,21 @@ function carregarOrganizacoes() {
     if (!organizacoes || organizacoes.length === 0) {
         listaOrganizacoes.innerHTML = '<div class="col-12"><div class="alert alert-info">Nenhuma organização disponível no momento.</div></div>';
         return;
+    }
+
+    // Se houver apenas uma organização, redirecionar diretamente para ela e esconder o botão voltar
+    if (organizacoes.length === 1) {
+        const unicaOrg = organizacoes[0];
+        if (botaoVoltar) {
+            botaoVoltar.style.display = 'none';
+        }
+        window.location.href = `ong.html?ong=${unicaOrg.slug}`;
+        return;
+    }
+
+    // Mostrar o botão voltar se houver mais de uma organização
+    if (botaoVoltar) {
+        botaoVoltar.style.display = 'block';
     }
 
     // Constrói os cards para cada organização

@@ -444,6 +444,12 @@ footer {
 .organizacao-card .card-title, 
 .organizacao-card .card-text, 
 .organizacao-card p {
+    color: #000000;
+}
+
+.dark-mode .organizacao-card .card-title,
+.dark-mode .organizacao-card .card-text,
+.dark-mode .organizacao-card p {
     color: var(--text-primary);
 }
 
