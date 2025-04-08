@@ -408,6 +408,13 @@ footer {
     color: var(--accent);
 }
 
+/* Logo da ONG */
+.logo-ong {
+    max-height: 180px;
+    margin-right: 20px;
+    width: auto;
+}
+
 /* Nome da ONG */
 #ong-nome, #footer-ong-nome {
     color: var(--accent);
@@ -456,4 +463,25 @@ footer {
 .dark-mode .organizacao-card span,
 .dark-mode .organizacao-card small {
     color: var(--text-secondary);
+}
+
+/* Responsividade para AMPLA */
+@media (max-width: 768px) {
+    body.ong-ampla .titulo-degrade {
+        display: none;
+    }
+    
+    body.ong-ampla .logo-ong {
+        margin-right: 0;
+        max-height: 150px;
+    }
+    
+    body.ong-ampla .d-flex.align-items-center.justify-content-center {
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+    body.ong-ampla .col-md-8.text-center {
+        padding: 0 15px;
+    }
 } 
