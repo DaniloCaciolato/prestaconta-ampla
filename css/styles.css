@@ -484,4 +484,43 @@ footer {
     body.ong-ampla .col-md-8.text-center {
         padding: 0 15px;
     }
+}
+
+/* Media query para telas pequenas */
+@media (max-width: 768px) {
+    .logo-text {
+        display: block !important;
+    }
+    
+    .logo-ong {
+        max-width: 200px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    header .container {
+        padding: 1rem;
+    }
+
+    header .row {
+        justify-content: center;
+    }
+
+    header .col-md-6:first-child {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    header .col-md-6:last-child {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .titulo-degrade {
+        display: none !important;
+    }
+
+    .d-flex.flex-column {
+        gap: 1rem;
+    }
 } 
