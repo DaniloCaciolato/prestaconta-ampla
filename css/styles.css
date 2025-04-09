@@ -516,7 +516,7 @@ footer {
         justify-content: center;
     }
 
-    .titulo-degrade {
+    #ong-nome {
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
