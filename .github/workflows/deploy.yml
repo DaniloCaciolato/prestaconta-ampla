@@ -32,4 +32,4 @@ jobs:
       - name: Check deployment
         run: |
           echo "Deploy concluído! O site deve estar atualizado em alguns minutos."
-          echo "URL do site: https://${{ github.repository_owner }}.github.io/presta-conta-vanilla/" 
+          echo "URL do site: https://${{ github.repository_owner }}.github.io/prestaconta-ampla/" 
