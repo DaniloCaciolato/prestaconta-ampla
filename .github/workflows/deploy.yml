@@ -6,6 +6,10 @@ on:
       - develop
       - main
 
+# Permissões necessárias para o deploy
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
