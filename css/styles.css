@@ -36,69 +36,6 @@
     --table-danger-bg: rgba(220, 53, 69, 0.1);
 }
 
-/* Variáveis para o tema escuro - Completamente refeito */
-.dark-mode {
-    /* Cores de fundo - Melhoradas para mais contraste */
-    --background: #121318;
-    --background-secondary: #1a1c25;
-    --surface: #23252f;
-    
-    /* Cores de texto - Ajustadas para melhor legibilidade */
-    --text-primary: #f1f5f9;
-    --text-secondary: #cbd5e1;
-    
-    /* Cores de destaque - Mais vibrantes para o tema escuro */
-    --primary: #a855f7;       /* Roxo claro (primário) */
-    --secondary: #818cf8;     /* Índigo claro (secundário) */
-    --accent: #ff8a4c;        /* Laranja claro (destaque) */
-    
-    /* Cores funcionais - Mais saturadas para contraste */
-    --success: #4ade80;       /* Verde claro (sucesso) */
-    --error: #fb7185;         /* Vermelho claro (erro) */
-    --warning: #fbbf24;       /* Amarelo claro (alerta) */
-    --info: #38bdf8;          /* Azul claro (informação) */
-
-    /* Bordas e sombras - Escurecidas */
-    --border: #3f3f46;
-    --shadow: rgba(0, 0, 0, 0.5);
-
-    /* Cores específicas para o tema escuro */
-    --header-gradient-start: #222222;
-    --card-header-bg: #331e52; /* Roxo escuro */
-    --table-primary-bg: rgba(168, 85, 247, 0.15);
-    --table-danger-bg: rgba(248, 113, 113, 0.15);
-}
-
-/* Media query para preferências do sistema */
-@media (prefers-color-scheme: dark) {
-    body:not(.light-mode):not(.dark-mode) {
-        /* Aplicar as mesmas variáveis do tema escuro */
-        --background: #121318;
-        --background-secondary: #1a1c25;
-        --surface: #23252f;
-        
-        --text-primary: #f1f5f9;
-        --text-secondary: #cbd5e1;
-        
-        --primary: #a855f7;
-        --secondary: #818cf8;
-        --accent: #ff8a4c;
-        
-        --success: #4ade80;
-        --error: #fb7185;
-        --warning: #fbbf24;
-        --info: #38bdf8;
-
-        --border: #3f3f46;
-        --shadow: rgba(0, 0, 0, 0.5);
-
-        --header-gradient-start: #222222;
-        --card-header-bg: #331e52;
-        --table-primary-bg: rgba(168, 85, 247, 0.15);
-        --table-danger-bg: rgba(248, 113, 113, 0.15);
-    }
-}
-
 /* Aplicação do tema */
 body {
     font-family: var(--font-family);
@@ -177,14 +114,6 @@ h2 {
     border-bottom-color: var(--border) !important;
 }
 
-.dark-mode section#receitas h2 {
-    color: var(--info);
-}
-
-.dark-mode section#despesas h2 {
-    color: var(--error);
-}
-
 /* Tabelas - Completamente refeitas */
 .table {
     color: var(--text-primary);
@@ -212,10 +141,6 @@ h2 {
 
 .table-hover tbody tr:hover {
     background-color: rgba(126, 34, 206, 0.05);
-}
-
-.dark-mode .table-hover tbody tr:hover {
-    background-color: rgba(168, 85, 247, 0.1);
 }
 
 /* Cabeçalhos específicos para tabelas */
@@ -258,11 +183,6 @@ h2 {
     color: var(--text-secondary) !important;
 }
 
-.dark-mode .text-muted {
-    color: var(--text-secondary) !important;
-    opacity: 0.85;
-}
-
 /* Formulários */
 .form-control, .form-select {
     background-color: var(--surface);
@@ -275,11 +195,6 @@ h2 {
     color: var(--text-primary);
     border-color: var(--primary);
     box-shadow: 0 0 0 0.25rem rgba(126, 34, 206, 0.25);
-}
-
-.dark-mode .form-control:focus, 
-.dark-mode .form-select:focus {
-    box-shadow: 0 0 0 0.25rem rgba(168, 85, 247, 0.25);
 }
 
 /* Botões */
@@ -319,23 +234,6 @@ a {
 
 a:hover {
     color: var(--accent);
-}
-
-/* Seletor de tema */
-.theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.theme-switch-icon {
-    font-size: 1.5rem;
-    transition: transform 0.3s ease;
-    color: #ffffff;
-}
-
-.dark-mode .theme-switch-icon {
-    transform: rotate(180deg);
 }
 
 /* Modal */
@@ -454,14 +352,8 @@ footer {
     color: #000000;
 }
 
-.dark-mode .organizacao-card .card-title,
-.dark-mode .organizacao-card .card-text,
-.dark-mode .organizacao-card p {
-    color: var(--text-primary);
-}
-
-.dark-mode .organizacao-card span,
-.dark-mode .organizacao-card small {
+.organizacao-card span,
+.organizacao-card small {
     color: var(--text-secondary);
 }
 
