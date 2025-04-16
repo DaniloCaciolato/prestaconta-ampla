@@ -71,6 +71,11 @@ function verificarDominioPermitido(hostname, ongSlug) {
         return true;
     }
     
+    // Permitir acesso no GitHub Pages
+    if (hostname.includes('github.io')) {
+        return true;
+    }
+    
     // Verificar se o domínio corresponde à ONG
     if (ongSlug === 'ampla' && hostname.includes('ampla.')) {
         return true;
