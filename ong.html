@@ -12,8 +12,107 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/styles.css?v=1.0.1">
     <style>
+        /* Estilos gerais */
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Estilos da galeria */
+        .galeria-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .galeria-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .galeria-item:hover {
+            transform: scale(1.02);
+        }
+
+        .galeria-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .galeria-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .galeria-item:hover .overlay {
+            transform: translateY(0);
+        }
+
+        /* Estilos do Swiper */
+        .galeria-swiper {
+            width: 100%;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 20px;
+        }
+
+        .swiper-pagination-bullet {
+            background: #fff;
+            opacity: 0.5;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .galeria-swiper {
+                height: 300px;
+            }
+        }
+        
         .back-to-top {
             position: fixed;
             bottom: 25px;
@@ -409,332 +508,73 @@
             overflow: visible;
         }
         
-        .galeria-navegacao {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            background-color: rgba(0, 71, 171, 0.8);
-            color: white;
-            border-radius: 50%;
+        /* Estilos para o Swiper em dispositivos móveis */
+        .galeria-swiper {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        
+        .galeria-swiper .swiper-slide {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
-            opacity: 0.7;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        .galeria-navegacao:hover {
-            opacity: 1;
-            transform: translateY(-50%) scale(1.1);
-        }
-        
-        .galeria-prev {
-            left: 10px;
-        }
-        
-        .galeria-next {
-            right: 10px;
-        }
-        
-        #galeria-carrossel {
-            min-height: 500px;
-            position: relative;
-            margin-top: 2rem;
-            border-top: 1px solid #eee;
-            padding-top: 2rem;
-            display: block !important;
-        }
-        
-        .carousel-item {
-            transition: all 0.4s ease;
-            opacity: 0;
-            visibility: hidden;
-            height: 0;
-        }
-        
-        .carousel-item.active {
-            opacity: 1;
-            visibility: visible;
-            height: auto;
-        }
-        
-        #carousel-inner {
-            width: 100%;
-            position: relative;
-            min-height: 400px;
-        }
-        
-        /* Estilo para quando tiver fotos no carrossel */
-        .galeria-titulo {
-            margin-top: 2rem;
-            text-align: center;
-            color: #0047AB;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            font-size: 1.2rem;
-            letter-spacing: 0.5px;
-            margin-bottom: 1rem;
-        }
-        
-        /* Estilos para mini-carrossel nas fotos individuais */
-        .foto-carrossel {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .navegacao-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 75%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 10;
-            padding: 0 10px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%);
-        }
-        
-        .foto-carrossel:hover .navegacao-overlay {
-            opacity: 1;
-        }
-        
-        .galeria-navegacao.galeria-prev-mini,
-        .galeria-navegacao.galeria-next-mini {
-            width: 35px;
-            height: 35px;
-            background-color: rgba(0, 71, 171, 0.9);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
-            opacity: 0.9;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            font-size: 1.2rem;
-        }
-        
-        .galeria-navegacao.galeria-prev-mini:hover,
-        .galeria-navegacao.galeria-next-mini:hover {
-            opacity: 1;
-            transform: scale(1.1);
-            background-color: rgba(0, 71, 171, 1);
-        }
-        
-        .img-atualizada {
-            animation: pulse-border 2s ease;
-        }
-        
-        @keyframes pulse-border {
-            0% { border: 2px solid transparent; }
-            25% { border: 2px solid green; }
-            75% { border: 2px solid green; }
-            100% { border: 2px solid transparent; }
-        }
-        
-        /* Estilos para o novo carrossel de páginas */
-        .paginas-container {
-            overflow: hidden;
-            position: relative;
-            margin: 0 30px; /* Reduz o espaço lateral para que não saia do quadro */
-            padding: 0;
-            width: calc(100% - 60px); /* Ajusta a largura para compensar as margens */
-            max-width: 100%;
-        }
-        
-        .paginas-wrapper {
-            display: flex;
-            transition: transform 0.5s ease;
-            width: 100%;
-        }
-        
-        .pagina {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 0;
-            padding: 0 5px;
-            width: 100%;
-        }
-        
-        .carrossel-control {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 35px;
-            height: 35px;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            border-radius: 50%;
-            background-color: rgba(0, 71, 171, 0.8);
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0.9;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
-        }
-        
-        .carrossel-control:hover {
-            opacity: 1;
-            background-color: rgba(0, 71, 171, 1);
-        }
-        
-        .carrossel-prev {
-            left: -5px; /* Move o botão mais para dentro */
-        }
-        
-        .carrossel-next {
-            right: -5px; /* Move o botão mais para dentro */
-        }
-        
-        /* Estilos específicos para o Instituto Futuro Melhor (verde e branco) */
-        body.ong-futuro {
-            background-color: #f0fff0;
-            font-family: 'Ubuntu', sans-serif;
-        }
-        
-        body.ong-futuro header,
-        body.ong-futuro footer {
-            background: linear-gradient(45deg, #CC5500, #FF6B00) !important;
-            color: white;
-        }
-        
-        body.ong-futuro .navbar {
-            background-color: #993D00;
-        }
-        
-        body.ong-futuro .conta {
-            color: #CC5500;
-        }
-        
-        body.ong-futuro #inicio h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            text-transform: uppercase;
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, #CC5500, #FF6B00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0px 2px 4px rgba(204, 85, 0, 0.2);
-            margin-bottom: 1rem;
-        }
-        
-        body.ong-futuro .titulo-moderno {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            font-size: 2.5rem;
-            letter-spacing: -0.5px;
-            text-transform: uppercase;
-            background: linear-gradient(45deg, #CC5500, #FF6B00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            display: inline-block;
-            padding: 0 10px;
-        }
-        
-        body.ong-futuro .titulo-moderno::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 5px;
-            bottom: -10px;
-            left: 0;
-            background: linear-gradient(90deg, transparent, #CC5500, transparent);
-            border-radius: 50px;
-        }
-        
-        body.ong-futuro #ong-descricao,
-        body.ong-futuro .texto-moderno {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.25rem;
-            line-height: 1.8;
-            letter-spacing: 0.2px;
-            color: #444;
-            text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.9);
-            font-weight: 400;
-        }
-        
-        body.ong-futuro .card {
-            box-shadow: 0 3px 10px rgba(204, 85, 0, 0.1);
+            background-color: #f8f9fa;
             border-radius: 8px;
-            border: none;
-            transition: all 0.3s ease;
+            overflow: hidden;
         }
         
-        body.ong-futuro .card:hover {
-            box-shadow: 0 5px 15px rgba(204, 85, 0, 0.2);
-            transform: translateY(-2px);
+        .galeria-swiper .swiper-slide img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
         }
         
-        body.ong-futuro .card-header {
-            background-color: #fff5f0;
-            border-top-left-radius: 8px !important;
-            border-top-right-radius: 8px !important;
+        .galeria-swiper .swiper-slide .card-body {
+            padding: 15px;
+            width: 100%;
         }
         
-        body.ong-futuro .btn-primary {
-            background-color: #CC5500;
-            border-color: #CC5500;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(204, 85, 0, 0.3);
-            transition: all 0.2s ease;
+        .galeria-swiper .swiper-slide .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
         }
         
-        body.ong-futuro .btn-primary:hover {
-            background-color: #993D00;
-            border-color: #993D00;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(204, 85, 0, 0.4);
+        .galeria-swiper .swiper-slide .card-text {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
         }
         
-        body.ong-futuro .table-primary {
-            background-color: #fff5f0;
+        .galeria-swiper .swiper-slide .card-footer {
+            padding: 10px;
+            background-color: transparent;
+            border-top: none;
         }
         
-        body.ong-futuro .text-primary {
-            color: #CC5500 !important;
+        .galeria-swiper .swiper-button-next,
+        .galeria-swiper .swiper-button-prev {
+            color: #0047AB;
         }
         
-        body.ong-futuro .back-to-top {
-            background-color: #CC5500 !important;
-            border-color: #CC5500 !important;
+        .galeria-swiper .swiper-pagination-bullet-active {
+            background-color: #0047AB;
         }
         
-        body.ong-futuro section h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            color: #CC5500;
-            letter-spacing: -0.5px;
-            position: relative;
-            padding-bottom: 0.5rem;
+        /* Ajustes para o tema escuro */
+        body.dark-mode .galeria-swiper .swiper-slide {
+            background-color: #23252f;
         }
         
-        body.ong-futuro section h2:after {
-            content: '';
-            position: absolute;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, #CC5500, #FF6B00);
-            bottom: -1px;
-            left: 0;
-            border-radius: 2px;
+        body.dark-mode .galeria-swiper .swiper-button-next,
+        body.dark-mode .galeria-swiper .swiper-button-prev {
+            color: #a855f7;
         }
-
+        
+        body.dark-mode .galeria-swiper .swiper-pagination-bullet-active {
+            background-color: #a855f7;
+        }
+        
         /* Estilos específicos para a Associação Palmitalense de Basquete e Esportes (laranja e branco) */
         body.ong-futuro {
             background-color: #fff5f0;
@@ -961,9 +801,6 @@
                 </div>
                 <div class="col-md-6 text-md-end d-flex justify-content-end align-items-center">
                     <p class="mb-0 me-3">Compromisso com a transparência e responsabilidade</p>
-                    <div class="theme-switch-wrapper">
-                        <i class="bi bi-moon-stars theme-switch-icon"></i>
-                    </div>
                 </div>
             </div>
         </div>
@@ -980,7 +817,10 @@
                         <a class="nav-link active" href="#inicio">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#mural">Mural de Avisos</a>
+                        <a class="nav-link" href="#sobre">Sobre</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projetos">Projetos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#receitas">Receitas</a>
@@ -989,22 +829,13 @@
                         <a class="nav-link" href="#despesas">Despesas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#galeria">Galeria</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#livros">Livros Contábeis</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#relatorios">Relatórios de Atividade</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#diretoria">Diretoria</a>
+                        <a class="nav-link" href="#galeria">Galeria</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#contato">Contato</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html"><i class="bi bi-arrow-left"></i> Voltar</a>
                     </li>
                 </ul>
             </div>
@@ -1015,8 +846,8 @@
         <section id="inicio" class="mb-5">
             <div class="row justify-content-center mb-4">
                 <div class="col-md-8 text-center">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <img src="./img/ampla-fundo.png" alt="Logo Associação de Assistência ao Menor de Platina" style="max-height: 180px; margin-right: 20px;">
+                    <div class="d-flex flex-column align-items-center justify-content-center">
+                        <img src="./img/ampla-fundo.png" alt="Logo Associação de Assistência ao Menor de Platina" class="logo-ong mb-3">
                         <h1 class="display-4 fw-bold mb-0 titulo-degrade">Associação de Assistência ao Menor de Platina</h1>
                     </div>
                 </div>
@@ -1228,51 +1059,48 @@
             </div>
         </section>
 
-        <section id="galeria" class="mb-5">
-            <h2 class="border-bottom pb-2 mb-4">Galeria de Fotos</h2>
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <label for="filtro-ano-galeria" class="me-2">Filtrar por ano:</label>
-                            <select id="filtro-ano-galeria" class="form-select form-select-sm d-inline-block w-auto me-2">
-                                <option value="todos">Todos</option>
-                                <option value="2025">2025</option>
-                                <option value="2024">2024</option>
-                                <option value="2023">2023</option>
-                            </select>
-                            
-                            <label for="filtro-mes-galeria" class="me-2 ms-3">Mês:</label>
-                            <select id="filtro-mes-galeria" class="form-select form-select-sm d-inline-block w-auto">
-                                <option value="todos">Todos</option>
-                                <option value="01">Janeiro</option>
-                                <option value="02">Fevereiro</option>
-                                <option value="03">Março</option>
-                                <option value="04">Abril</option>
-                                <option value="05">Maio</option>
-                                <option value="06">Junho</option>
-                                <option value="07">Julho</option>
-                                <option value="08">Agosto</option>
-                                <option value="09">Setembro</option>
-                                <option value="10">Outubro</option>
-                                <option value="11">Novembro</option>
-                                <option value="12">Dezembro</option>
-                            </select>
-                        </div>
-                        <div>
-                            <input type="text" id="busca-galeria" class="form-control form-control-sm" placeholder="Buscar fotos...">
-                        </div>
+        <!-- Seção de Galeria -->
+        <section id="galeria" class="section">
+            <div class="container">
+                <h2 class="section-title">Galeria de Fotos</h2>
+                
+                <!-- Filtros -->
+                <div class="filtros-container">
+                    <div class="filtro-grupo">
+                        <label for="filtro-ano">Ano:</label>
+                        <select id="filtro-ano">
+                            <option value="">Todos</option>
+                        </select>
                     </div>
                     
-                    <div class="galeria-container mb-4">
-                        <div id="galeria-grid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                            <!-- Todas as fotos serão exibidas aqui -->
-                        </div>
+                    <div class="filtro-grupo">
+                        <label for="filtro-mes">Mês:</label>
+                        <select id="filtro-mes">
+                            <option value="">Todos</option>
+                        </select>
                     </div>
                     
-                    <div class="text-center mt-4" id="sem-fotos" style="display: none;">
-                        <p class="text-muted">Nenhuma foto encontrada para o período selecionado.</p>
+                    <div class="filtro-grupo">
+                        <label for="busca-fotos">Buscar:</label>
+                        <input type="text" id="busca-fotos" placeholder="Digite para buscar...">
                     </div>
+                </div>
+                
+                <!-- Mensagem quando não há fotos -->
+                <div id="mensagem-sem-fotos" class="mensagem-sem-dados">
+                    <i class="fas fa-images"></i>
+                    <p>Nenhuma foto disponível no momento.</p>
+                </div>
+                
+                <!-- Grid para Desktop -->
+                <div id="galeria-grid" class="galeria-grid"></div>
+                
+                <!-- Swiper para Mobile -->
+                <div id="galeria-swiper" class="galeria-swiper swiper">
+                    <div class="swiper-wrapper"></div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                 </div>
             </div>
         </section>
@@ -1717,6 +1545,7 @@
             // Limpa os containers
             const gridContainer = document.getElementById('galeria-grid');
             const semFotos = document.getElementById('sem-fotos');
+            const swiperWrapper = document.querySelector('.swiper-wrapper');
             
             if (!gridContainer) {
                 console.error('Container da galeria não encontrado');
@@ -1724,6 +1553,7 @@
             }
             
             gridContainer.innerHTML = '';
+            if (swiperWrapper) swiperWrapper.innerHTML = '';
             
             // Obtém os valores dos filtros
             const anoSelecionado = filtroAnoGaleria ? filtroAnoGaleria.value : 'todos';
@@ -1740,6 +1570,7 @@
                 console.error('Dados não encontrados', {dadosONGs, ongSlug});
                 semFotos.style.display = 'block';
                 gridContainer.style.display = 'none';
+                if (swiperWrapper) swiperWrapper.style.display = 'none';
                 return;
             }
             
@@ -1776,6 +1607,7 @@
             if (fotosFiltradas.length === 0) {
                 semFotos.style.display = 'block';
                 gridContainer.style.display = 'none';
+                if (swiperWrapper) swiperWrapper.style.display = 'none';
                 return;
             }
             
@@ -1915,6 +1747,54 @@
             
             // Inicializar o carrossel
             atualizarPaginaAtual();
+            
+            // Inicializar o Swiper para dispositivos móveis
+            if (swiperWrapper) {
+                // Adicionar slides ao Swiper
+                fotosFiltradas.forEach(foto => {
+                    const dataObj = new Date(foto.data);
+                    const dataFormatada = dataObj.toLocaleDateString('pt-BR');
+                    
+                    const slide = document.createElement('div');
+                    slide.className = 'swiper-slide';
+                    slide.innerHTML = `
+                        <div class="card h-100" data-foto-id="${foto.id}">
+                            <img src="${foto.imagem}" class="card-img-top" alt="${foto.titulo}">
+                            <div class="card-body">
+                                <h5 class="card-title">${foto.titulo}</h5>
+                                <p class="card-text">${foto.descricao}</p>
+                                <p class="card-text"><small class="text-muted">Data: ${dataFormatada}</small></p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-primary btn-sm" onclick="abrirModalFoto(${foto.id})">
+                                    Ver ampliado
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    swiperWrapper.appendChild(slide);
+                });
+                
+                // Inicializar o Swiper
+                const swiper = new Swiper('.galeria-swiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                    loop: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    autoplay: {
+                        delay: 5000,
+                        disableOnInteraction: false,
+                    },
+                });
+            }
         }
         
         // Função para recarregar os dados da imagem com o ID 6
@@ -2141,9 +2021,10 @@
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/dados.js?v=202407312050"></script>
-    <script src="js/ong.js"></script>
-    <script src="js/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/dados.js?v=1.0.1"></script>
+    <script src="js/ong.js?v=1.0.1"></script>
+    <script src="js/main.js?v=202407312050"></script>
     
     <script>
         window.addEventListener('load', function() {
@@ -2268,5 +2149,27 @@
             atualizarMenuAtivo();
         });
     </script>
+
+    <!-- Modal de Visualização de Fotos -->
+    <div class="modal fade" id="fotoModal" tabindex="-1" aria-labelledby="fotoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fotoModalLabel">Visualização da Foto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img id="modalFoto" src="" alt="Foto da despesa" class="img-fluid rounded">
+                    </div>
+                    <div class="mt-3">
+                        <h6 id="modalTitulo" class="mb-2"></h6>
+                        <p id="modalDescricao" class="text-muted mb-2"></p>
+                        <small id="modalData" class="text-muted"></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html> 

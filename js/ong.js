@@ -6,6 +6,9 @@ let dadosReceitas = [];
 let dadosDespesas = [];
 let dadosOng = null;
 
+// Inicializa o Swiper para a galeria mobile
+let galeriaSwiper;
+
 document.addEventListener('DOMContentLoaded', function() {
     // Tentar obter o slug da ONG de várias formas
     let orgSlug = null;
@@ -313,104 +316,104 @@ function carregarReceitas(filtroAno = 'todos', filtroMes = 'todos', termoBusca =
 /**
  * Carrega as despesas da ONG
  */
-function carregarDespesas(filtroAno = 'todos', filtroMes = 'todos', termoBusca = '') {
-    // Verificar se o domínio atual corresponde à ONG solicitada
+function carregarDespesas() {
+    const container = document.getElementById('despesasContainer');
+    if (!container) return;
+
+    // Verifica o domínio
     const hostname = window.location.hostname;
     const urlParams = new URLSearchParams(window.location.search);
-    const ongSlug = urlParams.get('ong') || 'ampla';
-    const dominioPermitido = verificarDominioPermitido(hostname, ongSlug);
-    
-    if (!dominioPermitido) {
-        console.log("Acesso negado: domínio não autorizado para esta ONG");
+    const ongSlug = urlParams.get('ong');
+    const ong = organizacoes.find(o => o.slug === ongSlug);
+
+    if (!ong || hostname !== ong.dominio) {
+        console.log('Acesso negado: domínio não autorizado');
         return;
     }
-    
-    const tabelaDespesas = document.getElementById('tabela-despesas');
-    const semDespesas = document.getElementById('sem-despesas');
-    
-    if (!tabelaDespesas) {
-        console.error('Tabela de despesas não encontrada');
-        return;
-    }
-    
-    // Limpar a tabela
-    tabelaDespesas.innerHTML = '';
-    
-    // Verificar se existem despesas
+
+    const dadosDespesas = dadosONGs[ongSlug]?.despesas || [];
+    const tbody = container.querySelector('tbody');
+    const totalElement = document.getElementById('totalDespesas');
+    const semDespesas = document.getElementById('semDespesas');
+    const filtroAno = document.getElementById('filtroAnoDespesas');
+    const filtroMes = document.getElementById('filtroMesDespesas');
+    const buscaDespesas = document.getElementById('buscaDespesas');
+
+    // Se não houver despesas, mostra a mensagem "Em breve"
     if (!dadosDespesas || dadosDespesas.length === 0) {
-        tabelaDespesas.style.display = 'none';
-        semDespesas.style.display = 'block';
-        semDespesas.innerHTML = `
-            <div class="col-12 text-center py-5">
-                <div class="d-flex flex-column align-items-center">
-                    <i class="bi bi-hourglass-split display-4 text-primary mb-3"></i>
-                    <h4 class="mb-2">Em breve</h4>
-                    <p class="text-muted">As despesas serão exibidas aqui em breve.</p>
-                </div>
-            </div>
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center py-4">
+                    <i class="bi bi-hourglass-split text-warning fs-4 d-block mb-2"></i>
+                    <span class="text-muted">Em breve</span>
+                </td>
+            </tr>
         `;
-        document.getElementById('total-despesas').textContent = 'R$ 0,00';
+        totalElement.textContent = 'R$ 0,00';
+        semDespesas.style.display = 'none';
         return;
     }
-    
-    // Aplicar filtros
-    let despesasFiltradas = dadosDespesas;
-    
-    if (filtroAno !== 'todos') {
-        despesasFiltradas = despesasFiltradas.filter(despesa => despesa.ano === filtroAno);
+
+    // Filtra as despesas
+    let despesasFiltradas = [...dadosDespesas];
+    const anoSelecionado = filtroAno.value;
+    const mesSelecionado = filtroMes.value;
+    const termoBusca = buscaDespesas.value.toLowerCase();
+
+    if (anoSelecionado) {
+        despesasFiltradas = despesasFiltradas.filter(d => d.ano === parseInt(anoSelecionado));
     }
-    
-    if (filtroMes !== 'todos') {
-        despesasFiltradas = despesasFiltradas.filter(despesa => {
-            const data = new Date(despesa.data);
-            return (data.getMonth() + 1).toString() === filtroMes;
+
+    if (mesSelecionado) {
+        despesasFiltradas = despesasFiltradas.filter(d => {
+            const mes = new Date(d.data).getMonth() + 1;
+            return mes === parseInt(mesSelecionado);
         });
     }
-    
+
     if (termoBusca) {
-        const termo = termoBusca.toLowerCase();
-        despesasFiltradas = despesasFiltradas.filter(despesa => 
-            despesa.descricao.toLowerCase().includes(termo) || 
-            despesa.categoria.toLowerCase().includes(termo) ||
-            despesa.projeto.toLowerCase().includes(termo)
+        despesasFiltradas = despesasFiltradas.filter(d => 
+            d.descricao.toLowerCase().includes(termoBusca) ||
+            d.categoria.toLowerCase().includes(termoBusca) ||
+            d.projeto.toLowerCase().includes(termoBusca)
         );
     }
-    
-    // Exibir ou ocultar a mensagem de "sem despesas"
+
+    // Atualiza a tabela
     if (despesasFiltradas.length === 0) {
-        tabelaDespesas.style.display = 'none';
-        semDespesas.style.display = 'block';
-        semDespesas.innerHTML = '<div class="col-12 text-center">Nenhuma despesa encontrada</div>';
-        document.getElementById('total-despesas').textContent = 'R$ 0,00';
-        return;
-    } else {
-        tabelaDespesas.style.display = 'table';
-        semDespesas.style.display = 'none';
-    }
-    
-    // Calcular o total de despesas
-    const totalDespesas = despesasFiltradas.reduce((total, despesa) => total + parseFloat(despesa.valor), 0);
-    document.getElementById('total-despesas').textContent = `R$ ${totalDespesas.toFixed(2).replace('.', ',')}`;
-    
-    // Renderizar as despesas
-    despesasFiltradas.forEach(despesa => {
-        const data = new Date(despesa.data);
-        const dataFormatada = data.toLocaleDateString('pt-BR');
-        
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${dataFormatada}</td>
-            <td>${despesa.descricao}</td>
-            <td>${despesa.categoria}</td>
-            <td>${despesa.projeto}</td>
-            <td class="text-end">R$ ${parseFloat(despesa.valor).toFixed(2).replace('.', ',')}</td>
-            <td class="text-center">
-                ${despesa.imagem ? `<button class="btn btn-sm btn-outline-primary" onclick="abrirModalDespesa(${despesa.id})"><i class="bi bi-image"></i></button>` : '-'}
-            </td>
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center py-4">
+                    <i class="bi bi-search text-muted fs-4 d-block mb-2"></i>
+                    <span class="text-muted">Nenhuma despesa encontrada</span>
+                </td>
+            </tr>
         `;
+        totalElement.textContent = 'R$ 0,00';
+        semDespesas.style.display = 'none';
+    } else {
+        tbody.innerHTML = despesasFiltradas.map(despesa => `
+            <tr>
+                <td>${formatarData(despesa.data)}</td>
+                <td>${despesa.descricao}</td>
+                <td>${despesa.categoria}</td>
+                <td>${despesa.projeto}</td>
+                <td class="text-end">R$ ${despesa.valor.toFixed(2)}</td>
+                <td class="text-end">${despesa.ano}</td>
+                <td class="text-center">
+                    ${despesa.imagem ? `
+                        <button class="btn btn-sm btn-outline-primary" onclick="abrirModalFoto('${despesa.imagem}', '${despesa.descricao}', '${despesa.categoria} - ${despesa.projeto}', '${formatarData(despesa.data)}')">
+                            <i class="bi bi-image"></i>
+                        </button>
+                    ` : '-'}
+                </td>
+            </tr>
+        `).join('');
         
-        tabelaDespesas.appendChild(row);
-    });
+        const total = despesasFiltradas.reduce((acc, curr) => acc + curr.valor, 0);
+        totalElement.textContent = `R$ ${total.toFixed(2)}`;
+        semDespesas.style.display = 'table-row';
+    }
 }
 
 /**
@@ -735,4 +738,205 @@ function carregarMuralAvisos() {
         
         muralSection.innerHTML = html;
     }
-} 
+}
+
+// Função para inicializar o Swiper para a galeria mobile
+function inicializarGaleriaSwiper() {
+    galeriaSwiper = new Swiper('.galeria-swiper', {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+    });
+}
+
+// Função para carregar a galeria de fotos
+function carregarGaleria() {
+    const container = document.getElementById('galeria-container');
+    const gridContainer = document.getElementById('galeria-grid');
+    const swiperContainer = document.getElementById('galeria-swiper');
+    const mensagemSemDados = document.getElementById('mensagem-sem-fotos');
+    
+    if (!container || !gridContainer || !swiperContainer || !mensagemSemDados) return;
+
+    // Verifica o domínio
+    const hostname = window.location.hostname;
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('ong');
+    
+    if (!slug || hostname !== 'prestaconta.org.br') {
+        console.log('Acesso negado: domínio não autorizado');
+        return;
+    }
+
+    // Obtém os dados da ONG
+    const ong = dadosONGs[slug];
+    if (!ong || !ong.fotos || ong.fotos.length === 0) {
+        mensagemSemDados.style.display = 'block';
+        gridContainer.style.display = 'none';
+        swiperContainer.style.display = 'none';
+        return;
+    }
+
+    // Esconde a mensagem de sem dados
+    mensagemSemDados.style.display = 'none';
+    
+    // Filtros
+    const anoSelect = document.getElementById('ano-fotos');
+    const mesSelect = document.getElementById('mes-fotos');
+    const buscaInput = document.getElementById('busca-fotos');
+    
+    // Preenche os selects de ano e mês
+    const anos = [...new Set(ong.fotos.map(foto => foto.ano))].sort((a, b) => b - a);
+    const meses = [...new Set(ong.fotos.map(foto => foto.mes))].sort((a, b) => a - b);
+    
+    anoSelect.innerHTML = '<option value="">Todos os anos</option>' +
+        anos.map(ano => `<option value="${ano}">${ano}</option>`).join('');
+        
+    mesSelect.innerHTML = '<option value="">Todos os meses</option>' +
+        meses.map(mes => `<option value="${mes}">${getNomeMes(mes)}</option>`).join('');
+
+    // Função para filtrar e exibir as fotos
+    function atualizarGaleria() {
+        const anoSelecionado = anoSelect.value;
+        const mesSelecionado = mesSelect.value;
+        const termoBusca = buscaInput.value.toLowerCase();
+        
+        const fotosFiltradas = ong.fotos.filter(foto => {
+            const matchAno = !anoSelecionado || foto.ano.toString() === anoSelecionado;
+            const matchMes = !mesSelecionado || foto.mes.toString() === mesSelecionado;
+            const matchBusca = !termoBusca || 
+                foto.titulo.toLowerCase().includes(termoBusca) ||
+                foto.descricao.toLowerCase().includes(termoBusca);
+            
+            return matchAno && matchMes && matchBusca;
+        });
+
+        if (fotosFiltradas.length === 0) {
+            mensagemSemDados.style.display = 'block';
+            gridContainer.style.display = 'none';
+            swiperContainer.style.display = 'none';
+            return;
+        }
+
+        mensagemSemDados.style.display = 'none';
+        
+        // Atualiza o grid para desktop
+        gridContainer.innerHTML = fotosFiltradas.map(foto => `
+            <div class="galeria-item" onclick="abrirFoto('${foto.id}')">
+                <img src="${foto.url}" alt="${foto.titulo}">
+                <div class="galeria-item-info">
+                    <div class="galeria-item-titulo">${foto.titulo}</div>
+                    <div class="galeria-item-data">${getNomeMes(foto.mes)}/${foto.ano}</div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Atualiza o swiper para mobile
+        swiperContainer.innerHTML = `
+            <div class="swiper-wrapper">
+                ${fotosFiltradas.map(foto => `
+                    <div class="swiper-slide" onclick="abrirFoto('${foto.id}')">
+                        <img src="${foto.url}" alt="${foto.titulo}">
+                        <div class="galeria-item-info">
+                            <div class="galeria-item-titulo">${foto.titulo}</div>
+                            <div class="galeria-item-data">${getNomeMes(foto.mes)}/${foto.ano}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        `;
+        
+        // Inicializa o swiper
+        new Swiper('.galeria-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    }
+
+    // Adiciona os event listeners
+    anoSelect.addEventListener('change', atualizarGaleria);
+    mesSelect.addEventListener('change', atualizarGaleria);
+    buscaInput.addEventListener('input', atualizarGaleria);
+
+    // Carrega a galeria inicial
+    atualizarGaleria();
+}
+
+// Função para abrir a foto em tamanho maior
+function abrirFoto(id) {
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('ong');
+    const foto = dadosONGs[slug].fotos.find(f => f.id === id);
+    
+    if (!foto) return;
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal-foto';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img src="${foto.url}" alt="${foto.titulo}">
+            <div class="modal-info">
+                <h3>${foto.titulo}</h3>
+                <p>${foto.descricao}</p>
+                <div class="modal-data">${getNomeMes(foto.mes)}/${foto.ano}</div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Fecha o modal ao clicar no X ou fora da imagem
+    modal.querySelector('.close-modal').onclick = () => modal.remove();
+    modal.onclick = (e) => {
+        if (e.target === modal) modal.remove();
+    };
+}
+
+// Função para abrir o modal de visualização de fotos
+function abrirModalFoto(foto, titulo, descricao, data) {
+    const modal = document.getElementById('fotoModal');
+    const modalFoto = document.getElementById('modalFoto');
+    const modalTitulo = document.getElementById('modalTitulo');
+    const modalDescricao = document.getElementById('modalDescricao');
+    const modalData = document.getElementById('modalData');
+
+    modalFoto.src = foto;
+    modalTitulo.textContent = titulo;
+    modalDescricao.textContent = descricao;
+    modalData.textContent = data;
+
+    const bsModal = new bootstrap.Modal(modal);
+    bsModal.show();
+}
+
+// Adicionar chamada da função no carregamento da página
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing code ...
+    carregarGaleria();
+    // ... existing code ...
+}); 
