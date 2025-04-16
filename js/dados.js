@@ -169,7 +169,7 @@ const dadosONGs = {
     },
     
     // Associação Palmitalense de Basquete e Esportes
-    "futuro": {
+    "basquete": {
         // Receitas
         receitas: [
             {

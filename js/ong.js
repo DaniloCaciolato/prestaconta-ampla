@@ -77,7 +77,10 @@ function verificarDominioPermitido(hostname, ongSlug) {
     }
     
     // Verificar se o domínio corresponde à ONG
-    if (ongSlug === 'ampla' && hostname.includes('ampla.')) {
+    if (ongSlug === 'ampla' && (
+        hostname.includes('ampla.') || 
+        hostname === 'ampla.prestaconta.com'
+    )) {
         return true;
     }
     
@@ -944,4 +947,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // ... existing code ...
     carregarGaleria();
     // ... existing code ...
-}); 
+});
+
+function verificarUrlAmigavel() {
+    const hostname = window.location.hostname;
+    const pathname = window.location.pathname;
+    
+    // Se estiver em um subdomínio
+    if (hostname.includes('.')) {
+        const subdomain = hostname.split('.')[0];
+        if (subdomain === 'ampla' || subdomain === 'basquete') {
+            return subdomain;
+        }
+    }
+    
+    // Se estiver usando URL amigável
+    if (pathname.startsWith('/ong/')) {
+        const slug = pathname.split('/')[2];
+        if (slug === 'ampla' || slug === 'basquete') {
+            return slug;
+        }
+    }
+    
+    return null;
+} 
