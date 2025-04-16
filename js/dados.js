@@ -302,4 +302,6 @@ const fontesReceita = [
     { fonte: 'Governo', valor: 30000.00 },
     { fonte: 'Venda', valor: 4500.00 },
     { fonte: 'Campanha', valor: 12000.00 }
-]; 
+];
+
+console.log('Dados carregados com sucesso!'); 
